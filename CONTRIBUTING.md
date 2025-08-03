@@ -7,4 +7,4 @@ Thanks for your interest in contributing to this project! ❤️
 1. Fork this repository.
 2. Clone your fork:
    ```bash
-   git clone https://github.com/rafisgithub/drf-starter-kit.git
+   git clone https://github.com/your-user-name/drf-starter-kit.git
