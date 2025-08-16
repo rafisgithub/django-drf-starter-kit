@@ -1,27 +1,27 @@
 from apps.system_setting.models import AboutSystem, SMTPSetting, SocialMedia
 
-def seed_about_system():
+def seed_system_setting():
 
-    about_system = {
+    system_setting = {
         "name": "Enter you application name",
         "title": "Your Title",
         "email": "your_email@example.com",
         "copyright": "© 2023 Enter you application name",
-        "logo": "about_system/logo/1.png",
-        "favicon": "about_system/favicon/favicon.ico",
+        "logo": "system_setting/logo/1.png",
+        "favicon": "system_setting/favicon/favicon.ico",
         "description": "Your description here.",
     }
 
-    AboutSystem.objects.get_or_create(defaults=about_system)
-    print("✅ About System seeded successfully.")
+    AboutSystem.objects.get_or_create(defaults=system_setting)
+    print("✅ System Setting seeded successfully.")
 
 
 def seed_social_media():
     social_media = [
-        {"name": "Facebook", "url": "https://facebook.com", "icon": "about_system/social_media/facebook.png"},
-        {"name": "Twitter", "url": "https://twitter.com", "icon": "about_system/social_media/twitter.png"},
-        {"name": "Instagram", "url": "https://instagram.com", "icon": "about_system/social_media/instagram.png"},
-        {"name": "LinkedIn", "url": "https://linkedin.com", "icon": "about_system/social_media/linkedin.png"},
+        {"name": "Facebook", "url": "https://facebook.com", "icon": "system_setting/social_media/facebook.png"},
+        {"name": "Twitter", "url": "https://twitter.com", "icon": "system_setting/social_media/twitter.png"},
+        {"name": "Instagram", "url": "https://instagram.com", "icon": "system_setting/social_media/instagram.png"},
+        {"name": "LinkedIn", "url": "https://linkedin.com", "icon": "system_setting/social_media/linkedin.png"},
     ]
 
     for sm in social_media:
