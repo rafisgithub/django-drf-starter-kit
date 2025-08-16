@@ -8,7 +8,7 @@ def seed_about_system():
         "email": "your_email@example.com",
         "copyright": "© 2023 Enter you application name",
         "logo": "about_system/logo/1.png",
-        "favicon": "about_system/favicon/1.png",
+        "favicon": "about_system/favicon/favicon.ico",
         "description": "Your description here.",
     }
 

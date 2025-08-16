@@ -8,7 +8,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         seed_users()
-     
         seed_about_system()
         seed_social_media()
         seed_smtp_credentials()
