@@ -1,13 +1,12 @@
 from django.contrib import admin
 from unfold.admin import ModelAdmin
-from .models import User, UserProfile, VendorProfile
+from .models import User, UserProfile
 from django.utils.html import format_html
 @admin.register(User)
 class CustomAdminClass(ModelAdmin):
-    list_display = ('id', 'email', 'first_name', 'last_name', 'preview_user_image', 'check_is_superuser','check_is_customer','check_is_vendor')
-    list_display_links = ('id', 'email', 'first_name', 'last_name', 'preview_user_image', 'check_is_superuser','check_is_customer','check_is_vendor')
+    list_display = ('id', 'email', 'first_name', 'last_name', 'preview_user_image', 'check_is_superuser')
+    list_display_links = ('id', 'email', 'first_name', 'last_name', 'preview_user_image', 'check_is_superuser')
     search_fields = ('email', 'first_name', 'last_name')
-    list_filter = ('is_customer', 'is_vendor', 'is_superuser')  
     def first_name(self, obj):
         return obj.profile.first_name if hasattr(obj, 'profile') else ''
 
@@ -22,13 +21,9 @@ class CustomAdminClass(ModelAdmin):
     
     def check_is_superuser(self, obj):
         return 'YES' if obj.is_superuser else 'NO'
-
-    def check_is_customer(self, obj):
-        return 'YES' if obj.is_customer else 'NO'
-
-    def check_is_vendor(self, obj):
-        return 'YES' if obj.is_vendor else 'NO'
     
 @admin.register(UserProfile)
 class UserProfileAdmin(ModelAdmin):
-    pass
+    list_display = ('id', 'user', 'first_name', 'last_name', 'phone', 'avatar', 'dob')
+    list_display_links = ('id', 'user', 'first_name', 'last_name')
+    search_fields = ('user__email', 'first_name', 'last_name')

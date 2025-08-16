@@ -15,9 +15,6 @@ from .views import (
     UpdataProfileAvatarView,
     UpdateProfileView,
     ProfileGet,
-    GSTVerificationView,
-    VerifyGSTOTPView,
-    VendorRegistrationView,
 )
 
 urlpatterns = [
@@ -40,8 +37,5 @@ urlpatterns = [
     path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("token/verify/", TokenVerifyView.as_view(), name="token_verify"),
 
-    #Vendor GST Verification
-    path('gst-verification/', GSTVerificationView.as_view(), name='gst-verification'),
-    path("verify-gst-otp/", VerifyGSTOTPView.as_view(), name="verify-gst-otp"),
-    path("vendor-registration/", VendorRegistrationView.as_view(), name="vendor-registration"),
+
 ]

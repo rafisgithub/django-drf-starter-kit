@@ -1,4 +1,4 @@
-from apps.users.models import User, UserProfile, VendorProfile
+from apps.users.models import User, UserProfile
 
 
 def seed_users():
@@ -8,8 +8,6 @@ def seed_users():
             "password": "12345678",
             "is_staff": True,
             "is_superuser": True,
-            "is_customer": True,
-            "is_vendor": True,
             "userprofile": {
                 "first_name": "Admin",
                 "last_name": "User",
@@ -25,7 +23,6 @@ def seed_users():
             "password": "12345678",
             "is_staff": False,
             "is_superuser": False,
-            "is_customer": True,
             "is_vendor": False,
             "userprofile": {
                 "first_name": "User",
@@ -42,7 +39,6 @@ def seed_users():
             "is_staff": False,
             "is_superuser": False,
             "is_customer": True,
-            "is_vendor": True,
             "userprofile": {
                 "first_name": "Vendor",
                 "last_name": "User",
@@ -57,8 +53,6 @@ def seed_users():
             "password": "12345678",
             "is_staff": False,
             "is_superuser": False,
-            "is_customer": True,
-            "is_vendor": True,
             "userprofile": {
                 "first_name": "Vendor",
                 "last_name": "User",
@@ -77,8 +71,6 @@ def seed_users():
             password=user["password"],
             is_staff=user["is_staff"],
             is_superuser=user["is_superuser"],
-            is_customer=user["is_customer"],
-            is_vendor=user["is_vendor"],
         )
 
         UserProfile.objects.get_or_create(
@@ -91,18 +83,5 @@ def seed_users():
             dob=user["userprofile"]["dob"],
         )
 
-        if(user["is_vendor"]):
-            VendorProfile.objects.get_or_create(
-                user=user_instance,
-                gstin="123456789012345",
-                phone_number="+1234567890",
-                store_name="Vendor Store",
-                ac_holder_name="Vendor Account",
-                ac_number="123456789012",
-                confirm_ac_number="123456789012",
-                ifsc_code="IFSC1234",
-                bank_name="Vendor Bank",
-                business_name="Vendor Business",
-                bank_details_confirmed=True,
-        )
+
     print("✅ User data seeded successfully.")

@@ -1,4 +1,4 @@
-from .models import User, UserProfile, VendorProfile
+from .models import User, UserProfile
 from rest_framework.exceptions import ValidationError
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -21,7 +21,6 @@ from .serializers import (
     ResetPasswordSerializer,
     UpdataProfileAvatarSerializer,
     UserProfileSerializer,
-    VendorRegistrationSerializer,
 )
 from django.http import Http404
 from apps.utils.helpers import success, error
@@ -188,54 +187,5 @@ class ProfileGet(APIView):
         return Response({'status': status.HTTP_200_OK, 'success': True, 'message': 'Profile get successfully.', 'data': data})
 
 
-def dashboard_callback(request, context):
-    from .models import User
-
-    total_user = User.objects.count()
-
-    user_join_data = (
-        User.objects
-        .annotate(date=TruncDate('created_at'))
-        .values('date')
-        .annotate(count=Count('id'))
-        .order_by('date')
-    )
-
-    labels = [entry['date'].strftime('%b %d') for entry in user_join_data]
-    data = [entry['count'] for entry in user_join_data]
-
-    context.update({
-        "total_user": total_user,
-        "labels": json.dumps(labels),
-        "data": json.dumps(data),
-    })
-
-    return context
-
-class GSTVerificationView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def post(self, request):
-        return success(message="GST verification successful.")
-    
-class VerifyGSTOTPView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def post(self, request):
-        return success(message="GST OTP verification successful.")
 
 
-class VendorRegistrationView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def post(self, request):
-        user = request.user
-        if VendorProfile.objects.filter(user=user).exists():
-            raise ValidationError({"error": "Vendor profile already exists for this user."})
-        serializer = VendorRegistrationSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(user=user)
-            user.is_vendor = True
-            user.save()
-            return success(data=serializer.data, message="Vendor registration successful.", code=status.HTTP_201_CREATED)
-        raise ValidationError(serializer.errors)

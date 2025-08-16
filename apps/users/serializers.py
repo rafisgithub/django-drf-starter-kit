@@ -1,14 +1,12 @@
 import email
 
 from apps.users.managers import UserManager
-from .models import User, UserProfile, OTP, VendorProfile
-from rest_framework import fields, serializers
+from .models import User, UserProfile, OTP
+from rest_framework import  serializers
 from django.core.exceptions import ValidationError
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.hashers import make_password
-from django.core.mail import send_mail
-from django.utils.timezone import now, timedelta
-from django.db import transaction
+from django.utils.timezone import timedelta
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.conf import settings
 from .utils import generate_otp, send_normal_mail
@@ -353,21 +351,3 @@ class UserProfileSerializer(serializers.ModelSerializer):
             "updated_at",
         ]
 
-class VendorRegistrationSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = VendorProfile
-        fields = [
-            "gstin",
-            "phone_number",
-            "store_name",
-            "ac_holder_name",
-            "ac_number",
-            "confirm_ac_number",
-            "ifsc_code",
-            "bank_name",
-            "business_name",
-            "bank_details_confirmed",
-        ]
-    def create(self, validated_data):
-        return super().create(validated_data)
