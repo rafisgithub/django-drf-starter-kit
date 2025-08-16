@@ -64,9 +64,8 @@ INSTALLED_APPS = [
     # internal apps
     "apps.seeders",
     "apps.users",
-    "apps.products",
     "apps.system_setting",
-    "apps.cms",
+
 ]
 
 MIDDLEWARE = [

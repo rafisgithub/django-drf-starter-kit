@@ -1,0 +1,34 @@
+from django.contrib import admin
+from unfold.admin import ModelAdmin
+from .models import User, UserProfile, VendorProfile
+from django.utils.html import format_html
+@admin.register(User)
+class CustomAdminClass(ModelAdmin):
+    list_display = ('id', 'email', 'first_name', 'last_name', 'preview_user_image', 'check_is_superuser','check_is_customer','check_is_vendor')
+    list_display_links = ('id', 'email', 'first_name', 'last_name', 'preview_user_image', 'check_is_superuser','check_is_customer','check_is_vendor')
+    search_fields = ('email', 'first_name', 'last_name')
+    list_filter = ('is_customer', 'is_vendor', 'is_superuser')  
+    def first_name(self, obj):
+        return obj.profile.first_name if hasattr(obj, 'profile') else ''
+
+    def last_name(self, obj):
+        return obj.profile.last_name if hasattr(obj, 'profile') else ''
+
+
+    def preview_user_image(self, obj):
+        if obj.profile.avatar:
+            return format_html('<img src="{}" style="max-height: 50px; max-width: 50px;" />', obj.profile.avatar.url)
+        return "No Image"
+    
+    def check_is_superuser(self, obj):
+        return 'YES' if obj.is_superuser else 'NO'
+
+    def check_is_customer(self, obj):
+        return 'YES' if obj.is_customer else 'NO'
+
+    def check_is_vendor(self, obj):
+        return 'YES' if obj.is_vendor else 'NO'
+    
+@admin.register(UserProfile)
+class UserProfileAdmin(ModelAdmin):
+    pass

@@ -63,38 +63,7 @@ def get_unfold_settings():
                         },
                     ],
                 },
-                {
-                    "title": _("Product Management"),
-                    "separator": True,  # Top border
-                    "collapsible": True,  # Collapsible group of links
-                    "items": [
-                        {
-                            "title": _("Categories"),
-                            "icon": "category",
-                            "link": reverse_lazy("admin:products_category_changelist"),
-                        },
-                        {
-                            "title": _("Subcategories"),
-                            "icon": "category",
-                            "link": reverse_lazy("admin:products_subcategory_changelist"),
-                        },
-                        {
-                            "title": _("Sizes"),
-                            "icon": "format_size",
-                            "link": reverse_lazy("admin:products_size_changelist"),
-                        },
-                        {
-                            "title": _("Colors"),
-                            "icon": "color_lens",
-                            "link": reverse_lazy("admin:products_color_changelist"),
-                        },
-                        {
-                            "title": _("Products"),
-                            "icon": "shopping_cart",
-                            "link": reverse_lazy("admin:products_product_changelist"),
-                        },
-                    ],
-                },
+               
                 {
                     "title": _("System Setting"),
                     "separator": True,
@@ -128,23 +97,7 @@ def get_unfold_settings():
                         },
                     ],
                 },
-                {
-                    "title": _("CMS"),
-                    "separator": True,
-                    "collapsible": True,
-                    "items": [
-                        {
-                            "title": _("FAQ Types"),
-                            "icon": "info",
-                            "link": reverse_lazy("admin:cms_faqtype_changelist"),
-                        },
-                        {
-                            "title": _("FAQs"),
-                            "icon": "question_mark",
-                            "link": reverse_lazy("admin:cms_faq_changelist"),
-                        },
-                    ],
-                },
+               
             ],
         },
 }
