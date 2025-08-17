@@ -1,7 +1,8 @@
+from django import forms
 from django.contrib import admin
 from django.utils.html import format_html
 from unfold.admin import ModelAdmin
-from .models import AboutSystem, DynamicPages, SMTPSetting, SocialMedia
+from .models import AboutSystem, DynamicPages, SMTPSetting, SocialMedia, SystemColor
 @admin.register(AboutSystem)
 
 class AboutSystemAdmin(ModelAdmin):
@@ -54,3 +55,27 @@ class SocialMediaAdmin(ModelAdmin):
         if obj.icon:
             return format_html(f'<img src="{obj.icon.url}" width="50" height="50" />')
         return "No Icon"
+    
+
+
+
+class SystemColorForm(forms.ModelForm):
+    class Meta:
+        model = SystemColor
+        fields = '__all__'
+        widgets = {
+            'code': forms.TextInput(attrs={
+                'type': 'color',
+                'style': 'width: 670px; height: 100px;'
+            })
+        }
+
+
+@admin.register(SystemColor)
+class SystemColorAdmin(ModelAdmin):
+    form = SystemColorForm
+    list_display = ("id", "name", "code", "is_active",)
+    search_fields = ("id", "name", "code",)
+    list_display_links = ("id", "name", "code",)
+
+

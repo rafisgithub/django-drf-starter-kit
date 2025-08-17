@@ -97,6 +97,13 @@ def get_unfold_settings():
                                 "admin:system_setting_smtpsetting_changelist"
                             ),
                         },
+                        {
+                            "title": _("System Color"),
+                            "icon": "palette",
+                            "link": reverse_lazy(
+                                "admin:system_setting_systemcolor_changelist"
+                            ),
+                        }
                     ],
                 },
                

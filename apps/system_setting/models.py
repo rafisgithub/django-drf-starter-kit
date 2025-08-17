@@ -56,3 +56,12 @@ class SocialMedia(models.Model):
     name = models.CharField(max_length=255)
     url = models.URLField()
     icon = models.ImageField(upload_to='about_system/social_media/', blank=True, null=True)
+
+
+class SystemColor(models.Model):
+    name = models.CharField(max_length=255)
+    code = models.CharField(max_length=7)
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.name

@@ -1,4 +1,4 @@
-from apps.system_setting.models import AboutSystem, SMTPSetting, SocialMedia
+from apps.system_setting.models import AboutSystem, SMTPSetting, SocialMedia, SystemColor
 
 def seed_system_setting():
 
@@ -8,12 +8,12 @@ def seed_system_setting():
         "email": "your_email@example.com",
         "copyright": "© 2023 Enter you application name",
         "logo": "system_setting/logo/1.png",
-        "favicon": "system_setting/favicon/favicon.ico",
+        "favicon": "system_setting/favicon/1.png",
         "description": "Your description here.",
     }
 
     AboutSystem.objects.get_or_create(defaults=system_setting)
-    print("✅ System Setting seeded successfully.")
+    print("✅ About System seeded successfully.")
 
 
 def seed_social_media():
@@ -44,3 +44,8 @@ def seed_smtp_credentials():
 
     SMTPSetting.objects.get_or_create(defaults=smtp_credentials)
     print("✅ SMTP Credentials seeded successfully.")
+
+
+def seed_system_color():
+    SystemColor.objects.get_or_create({"name":"orange","code":"#FFA500"})
+    print("✅ System Color seeded successfully.")

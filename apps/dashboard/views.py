@@ -1,4 +1,5 @@
 from django.shortcuts import render, HttpResponse
+from apps.system_setting.models import SystemColor
 from apps.users.models import User
 from django.utils import timezone
 from datetime import datetime
@@ -17,8 +18,11 @@ def dashboard_callback(request, context):
     else:
         start_of_next_month = now.replace(month=now.month + 1, day=1)
 
+    system_color = SystemColor.objects.filter(is_active=True).first().code
+
     context.update(
         {
+            "system_color": system_color,
             "total_users": User.objects.count(),
             "total_subscriptions": total_subscribers,
             "total_income": total_income,

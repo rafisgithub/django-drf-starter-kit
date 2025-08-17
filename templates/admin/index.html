@@ -21,8 +21,7 @@
 
 
 <main class="flex-1 max-h-full p-5 overflow-hidden overflow-y-scroll">
-
-
+    
     <!-- Start Content -->
     <div class="grid grid-cols-1 gap-5 mt-6 sm:grid-cols-2 lg:grid-cols-4">
 
@@ -32,9 +31,9 @@
                     <span class="text-gray-400">Total Subscriptions</span>
                     <span class="text-lg font-semibold">{{total_subscriptions}}</span>
                 </div>
-                <svg fill="#db4848" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                <svg fill="{{ system_color }}" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink" width="px" height="100px" viewBox="0 0 256.00 256.00"
-                    enable-background="new 0 0 256 178" xml:space="preserve" stroke="#db4848" stroke-width="0.00256">
+                    enable-background="new 0 0 256 178" xml:space="preserve" stroke="{{ system_color }}" stroke-width="0.00256">
                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                     <g id="SVGRepo_iconCarrier">
@@ -56,7 +55,7 @@
                     <span class="text-gray-400">Total Users</span>
                     <span class="text-lg font-semibold">{{total_users}}</span>
                 </div>
-                <svg fill="#db4848" width="77px" height="77px" viewBox="0 0 32 32" version="1.1"
+                <svg fill="{{ system_color }}" width="77px" height="77px" viewBox="0 0 32 32" version="1.1"
                     xmlns="http://www.w3.org/2000/svg">
                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -80,7 +79,7 @@
                     <span class="text-gray-400">Total Income</span>
                     <span class="text-lg font-semibold">{{total_income}}</span>
                 </div>
-                <svg fill="#db4848" width="77px" height="77px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                <svg fill="{{ system_color }}" width="77px" height="77px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                     <g id="SVGRepo_iconCarrier">
@@ -113,7 +112,7 @@
                     <span class="text-gray-400">Total Super Admin</span>
                     <span class="text-lg font-semibold">{{supper_admins}}</span>
                 </div>
-                <svg fill="#db4848" height="77px" width="77px" version="1.1" id="Capa_1"
+                <svg fill="{{ system_color }}" height="77px" width="77px" version="1.1" id="Capa_1"
                     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                     viewBox="0 0 474.565 474.565" xml:space="preserve">
                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -217,7 +216,7 @@
             height: 350,
             type: "area",
         },
-        colors: ["#db4848"],
+        colors: ["{{ system_color }}"],
         plotOptions: {
             bar: {
                 borderRadius: 10,
@@ -234,7 +233,7 @@
             offsetY: -20,
             style: {
                 fontSize: "12px",
-                colors: ["#db4848"],
+                colors: ["{{ system_color }}"],
             },
 
             background: {
@@ -243,7 +242,7 @@
                 padding: 4,
                 borderRadius: 2,
                 borderWidth: 0,
-                borderColor: "#db4848",
+                borderColor: "{{ system_color }}",
                 opacity: 0.9,
 
             },
@@ -268,7 +267,7 @@
             ],
             labels: {
                 style: {
-                    colors: "#db4848",
+                    colors: "{{ system_color }}",
                     fontSize: "12px",
                 },
             },
@@ -283,8 +282,8 @@
                 fill: {
                     type: "gradient",
                     gradient: {
-                        colorFrom: "#db4848",
-                        colorTo: "#db4848",
+                        colorFrom: "{{ system_color }}",
+                        colorTo: "{{ system_color }}",
                         stops: [0, 100],
                         opacityFrom: 0.4,
                         opacityTo: 0.5,
@@ -315,7 +314,7 @@
             offsetY: 330,
             align: "center",
             style: {
-                color: "#db4848",
+                color: "{{ system_color }}",
             },
         },
     };
