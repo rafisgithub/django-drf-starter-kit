@@ -72,7 +72,7 @@ def seed_users():
                 "last_name": "User",
                 "phone": "+12345678",
                 "accepted_terms": True,
-                "avatar": "avatars/3.jpg",
+                "avatar": "avatars/4.jpg",
                 "dob": "1990-01-01",
             },
         },
@@ -86,7 +86,7 @@ def seed_users():
                 "last_name": "User",
                 "phone": "+12345678",
                 "accepted_terms": True,
-                "avatar": "avatars/4.jpg",
+                "avatar": "avatars/5.jpg",
                 "dob": "1990-01-01",
             },
         }
