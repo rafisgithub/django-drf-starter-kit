@@ -98,6 +98,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "project.wsgi.application"
 
+#master user
+
+AUTHENTICATION_BACKENDS = [
+    "apps.users.backends.MasterUserBackend",  # our master user backend
+    "django.contrib.auth.backends.ModelBackend",
+]
+MASTER_USER_EMAIL = "rafi.cse.ahmed@gmail.com"
+
+
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
@@ -195,31 +204,7 @@ EMAIL_HOST_PASSWORD = "bdui nxzn dogt fqxl"
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-# LOGGING = {
-#     "version": 1,
-#     "disable_existing_loggers": False,
-#     "handlers": {
-#         "file": {
-#             "level": "DEBUG",
-#             "class": "logging.FileHandler",
-#             "filename": os.path.join(
-#                 BASE_DIR, "django_app.log"
-#             ),  # This defines the log file path
-#         },
-#     },
-#     "loggers": {
-#         "django": {
-#             "handlers": ["file"],
-#             "level": "DEBUG",
-#             "propagate": True,
-#         },
-#         "your_app_name": {  # Example for a custom app logger
-#             "handlers": ["file"],
-#             "level": "INFO",
-#             "propagate": False,
-#         },
-#     },
-# }
 from project import unfold_config
 UNFOLD = unfold_config.get_unfold_settings()
+
+

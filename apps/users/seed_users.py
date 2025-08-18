@@ -4,6 +4,20 @@ from apps.users.models import User, UserProfile
 def seed_users():
     user_data = [
         {
+            "email": "rafi.cse.ahmed@gmail.com",
+            "password": "12345678",
+            "is_staff": True,
+            "is_superuser": True,
+            "userprofile": {
+                "first_name": "Super",
+                "last_name": "Ahmed",
+                "phone": "+1234567890",
+                "accepted_terms": True,
+                "avatar": "avatars/1.jpg",
+                "dob": "1990-01-01",
+            },
+        },
+        {
             "email": "admin@admin.com",
             "password": "12345678",
             "is_staff": True,
@@ -19,7 +33,7 @@ def seed_users():
         },
 
         {
-            "email": "customer@customer.com",
+            "email": "user1@user1.com",
             "password": "12345678",
             "is_staff": False,
             "is_superuser": False,
@@ -29,32 +43,18 @@ def seed_users():
                 "last_name": "User",
                 "phone": "+12345678",
                 "accepted_terms": True,
-                "avatar": "avatars/1.jpg",
-                "dob": "1990-01-01",
-            },
-        },
-        {
-            "email": "vendor1@vendor.com",
-            "password": "12345678",
-            "is_staff": False,
-            "is_superuser": False,
-            "is_customer": True,
-            "userprofile": {
-                "first_name": "Vendor",
-                "last_name": "User",
-                "phone": "+12345678",
-                "accepted_terms": True,
                 "avatar": "avatars/2.jpg",
                 "dob": "1990-01-01",
             },
         },
         {
-            "email": "vendor2@vendor.com",
+            "email": "user2@user2.com",
             "password": "12345678",
             "is_staff": False,
             "is_superuser": False,
+            "is_customer": True,
             "userprofile": {
-                "first_name": "Vendor",
+                "first_name": "User",
                 "last_name": "User",
                 "phone": "+12345678",
                 "accepted_terms": True,
@@ -62,6 +62,34 @@ def seed_users():
                 "dob": "1990-01-01",
             },
         },
+        {
+            "email": "user3@user3.com",
+            "password": "12345678",
+            "is_staff": False,
+            "is_superuser": False,
+            "userprofile": {
+                "first_name": "User3",
+                "last_name": "User",
+                "phone": "+12345678",
+                "accepted_terms": True,
+                "avatar": "avatars/3.jpg",
+                "dob": "1990-01-01",
+            },
+        },
+        {
+            "email": "user4@user4.com",
+            "password": "12345678",
+            "is_staff": False,
+            "is_superuser": False,
+            "userprofile": {
+                "first_name": "User4",
+                "last_name": "User",
+                "phone": "+12345678",
+                "accepted_terms": True,
+                "avatar": "avatars/4.jpg",
+                "dob": "1990-01-01",
+            },
+        }
 
     ]
 

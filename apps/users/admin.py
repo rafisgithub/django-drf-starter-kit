@@ -2,11 +2,19 @@ from django.contrib import admin
 from unfold.admin import ModelAdmin
 from .models import User, UserProfile
 from django.utils.html import format_html
+
 @admin.register(User)
 class CustomAdminClass(ModelAdmin):
     list_display = ('id', 'email', 'first_name', 'last_name', 'preview_user_image', 'check_is_superuser')
     list_display_links = ('id', 'email', 'first_name', 'last_name', 'preview_user_image', 'check_is_superuser')
     search_fields = ('email', 'first_name', 'last_name')
+
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.exclude(id=1)
+
+
     def first_name(self, obj):
         return obj.profile.first_name if hasattr(obj, 'profile') else ''
 
