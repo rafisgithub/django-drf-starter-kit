@@ -47,5 +47,8 @@ def seed_smtp_credentials():
 
 
 def seed_system_color():
-    SystemColor.objects.get_or_create({"name":"orange","code":"#FFA500"})
+    SystemColor.objects.get_or_create({
+        "name" : "orange",
+        "code" : "#FFA500"
+    })
     print("✅ System Color seeded successfully.")
