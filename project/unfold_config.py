@@ -43,7 +43,6 @@ def get_unfold_settings():
             "show_all_applications": True,  # Dropdown with all applications and models
             "navigation": [
                 {
-                   
                     "items": [
                         {
                             "title": _("Dashboard"),
@@ -65,7 +64,6 @@ def get_unfold_settings():
                         },
                     ],
                 },
-               
                 {
                     "title": _("System Setting"),
                     "separator": True,
@@ -106,7 +104,6 @@ def get_unfold_settings():
                         }
                     ],
                 },
-               
                 {
                     "title": _("Page Management"),
                     "separator": True,
@@ -117,11 +114,8 @@ def get_unfold_settings():
                             "icon": "pages",
                             "link": reverse_lazy("admin:cms_page_changelist"),
                         },
-                        
-                      
                     ],
                 },
-               
                 {
                     "title": _("CMS Management"),
                     "separator": True,
@@ -132,7 +126,6 @@ def get_unfold_settings():
                             "icon": "auto_stories",
                             "link": reverse_lazy("admin:cms_cms_changelist"),
                         },
-                    
                     ],
                 },
                 {
@@ -149,4 +142,4 @@ def get_unfold_settings():
                 }
             ],
         },
-}
+    }

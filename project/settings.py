@@ -236,6 +236,7 @@ DEFAULT_FROM_EMAIL = 'support@softvencefsd.xyz'
 # internal ips for debug toolbar settings
 INTERNAL_IPS = [
     "127.0.0.1",
+    "localhost",
 ]
 
 
