@@ -171,155 +171,116 @@
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
 <script>
-    const setup = () => {
-        function getSidebarStateFromLocalStorage() {
-            // if it already there, use it
-            if (window.localStorage.getItem("isSidebarOpen")) {
-                return JSON.parse(window.localStorage.getItem("isSidebarOpen"));
-            }
+    // Define the helper first
+    function getChartTooltipTheme() {
+        return document.documentElement.classList.contains("dark") ? "dark" : "light";
+    }
 
-            // else return the initial state you want
-            return false;
-        }
+    document.addEventListener('alpine:initialized', () => {
+        // Now Alpine has processed x-bind:class and added 'dark' if needed
+        console.log("Alpine initialized, current theme:", getChartTooltipTheme());
 
-        function setSidebarStateToLocalStorage(value) {
-            window.localStorage.setItem("isSidebarOpen", value);
-        }
+        // Now initialize ApexCharts
+        initializeChart();
+    });
 
-        return {
-            loading: true,
-            isSidebarOpen: getSidebarStateFromLocalStorage(),
-            toggleSidbarMenu() {
-                this.isSidebarOpen = !this.isSidebarOpen;
-                setSidebarStateToLocalStorage(this.isSidebarOpen);
-            },
-            isSettingsPanelOpen: false,
-            isSearchBoxOpen: false,
-        };
-    };
-    var currect_year = new Date().getFullYear();
+    function initializeChart() {
+        var currect_year = new Date().getFullYear();
+        var data = JSON.parse("{{ data|escapejs }}"); // Safe escaping
 
-    var data = "{{ data}}";
-
-    data = JSON.parse(data);
-
-    console.log(data);
-
-    var options = {
-        series: [
-            {
-                name: "New Users Signups",
+        var options = {
+            series: [{
+                name: "New Users Signup",
                 data: data,
+            }],
+            tooltip: {
+                theme: getChartTooltipTheme() // Correct theme now
             },
-        ],
-        chart: {
-            height: 350,
-            type: "area",
-        },
-        colors: ["{{ system_color }}"],
-        plotOptions: {
-            bar: {
-                borderRadius: 10,
-                dataLabels: {
-                    position: "top", // top, center, bottom
-                },
+            chart: {
+                height: 350,
+                type: "area",
             },
-        },
-        dataLabels: {
-            enabled: true,
-            formatter: function (val) {
-                return val + "%";
-            },
-            offsetY: -20,
-            style: {
-                fontSize: "12px",
-                colors: ["{{ system_color }}"],
-            },
-
-            background: {
-                enabled: true,
-                foreColor: "#fff",
-                padding: 4,
-                borderRadius: 2,
-                borderWidth: 0,
-                borderColor: "{{ system_color }}",
-                opacity: 0.9,
-
-            },
-        },
-
-
-
-        xaxis: {
-            categories: [
-                "Jan",
-                "Feb",
-                "Mar",
-                "Apr",
-                "May",
-                "Jun",
-                "Jul",
-                "Aug",
-                "Sep",
-                "Oct",
-                "Nov",
-                "Dec",
-            ],
-            labels: {
-                style: {
-                    colors: "{{ system_color }}",
-                    fontSize: "12px",
-                },
-            },
-            position: "top",
-            axisBorder: {
-                show: false,
-            },
-            axisTicks: {
-                show: false,
-            },
-            crosshairs: {
-                fill: {
-                    type: "gradient",
-                    gradient: {
-                        colorFrom: "{{ system_color }}",
-                        colorTo: "{{ system_color }}",
-                        stops: [0, 100],
-                        opacityFrom: 0.4,
-                        opacityTo: 0.5,
+            colors: ["{{ system_color }}"],
+            plotOptions: {
+                bar: {
+                    borderRadius: 10,
+                    dataLabels: {
+                        position: "top",
                     },
                 },
             },
-            tooltip: {
+            dataLabels: {
                 enabled: true,
-            },
-        },
-        yaxis: {
-            axisBorder: {
-                show: false,
-            },
-            axisTicks: {
-                show: false,
-            },
-            labels: {
-                show: false,
                 formatter: function (val) {
-                    return val;
+                    return val + "%";
+                },
+                offsetY: -20,
+                style: {
+                    fontSize: "12px",
+                    colors: ["{{ system_color }}"],
+                },
+                background: {
+                    enabled: true,
+                    foreColor: "#fff",
+                    padding: 4,
+                    borderRadius: 2,
+                    borderWidth: 0,
+                    borderColor: "{{ system_color }}",
+                    opacity: 0.9,
                 },
             },
-        },
-        title: {
-            text: `Monthly new Users Signups ${currect_year}`,
-            floating: true,
-            offsetY: 330,
-            align: "center",
-            style: {
-                color: "{{ system_color }}",
+            xaxis: {
+                categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                labels: {
+                    style: {
+                        colors: "{{ system_color }}",
+                        fontSize: "12px",
+                    },
+                },
+                position: "top",
+                axisBorder: { show: false },
+                axisTicks: { show: false },
+                crosshairs: {
+                    fill: {
+                        type: "gradient",
+                        gradient: {
+                            colorFrom: "{{ system_color }}",
+                            colorTo: "{{ system_color }}",
+                            stops: [0, 100],
+                            opacityFrom: 0.4,
+                            opacityTo: 0.5,
+                        },
+                    },
+                },
+                tooltip: { enabled: true },
             },
-        },
-    };
+            yaxis: {
+                axisBorder: { show: false },
+                axisTicks: { show: false },
+                labels: { show: false }
+            },
+            title: {
+                text: `Monthly new Users Signups ${currect_year}`,
+                floating: true,
+                offsetY: 330,
+                align: "center",
+                style: {
+                    color: "{{ system_color }}",
+                },
+            },
+        };
 
-    var chart = new ApexCharts(document.querySelector("#chart"), options);
-    chart.render();
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();
+
+        // Watch for theme changes
+        const observer = new MutationObserver(() => {
+            chart.updateOptions({
+                tooltip: { theme: getChartTooltipTheme() }
+            });
+        });
+
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    }
 </script>
 {% endblock %}

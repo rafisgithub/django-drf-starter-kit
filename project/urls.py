@@ -19,13 +19,14 @@ from django.urls import path , include, re_path
 from django.conf.urls.static import static
 from project import settings
 from django.views.static import serve
+from debug_toolbar.toolbar import debug_toolbar_urls
 
 urlpatterns = [
     re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
     path('api/', include('apps.users.urls')),
     path('api/', include('apps.system_setting.urls')),
     path('', admin.site.urls),
-]
+] + debug_toolbar_urls()
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
