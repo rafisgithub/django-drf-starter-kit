@@ -34,18 +34,20 @@ SECRET_KEY = "django-insecure-_(4sk(m(!$$xxvz)-7!b7ibkz&2sotl0#=hv8+e*_^__qzgs18
 DEBUG = True
 
 if(DEBUG):
+    
     ALLOWED_HOSTS = ['*'] 
     CORS_ALLOW_ALL_ORIGINS = True
+    CORS_ALLOW_CREDENTIALS = True
     CSRF_TRUSTED_ORIGINS = [
         'https://localhost', 
         'https://127.0.0.1',
-        'https://*.netlify.app/'
     ]
 
 else:
 
     ALLOWED_HOSTS = ['admin.clever-cv.de', 'clever-cv.de']
     CORS_ALLOW_ALL_ORIGINS = False
+    CORS_ALLOW_CREDENTIALS = True
     CSRF_TRUSTED_ORIGINS = [
         "https://admin.clever-cv.de",
         "https://clever-cv.de",
