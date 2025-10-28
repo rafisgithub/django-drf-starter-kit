@@ -1,0 +1,653 @@
+{
+	"info": {
+		"_postman_id": "a1767f67-7ce9-42f7-b7cd-15754a632773",
+		"name": "Starter kit",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "36741567",
+		"_collection_link": "https://rafiteam.postman.co/workspace/starterkit~4bee4d98-1082-48da-b124-642a390a1a59/collection/36741567-a1767f67-7ce9-42f7-b7cd-15754a632773?action=share&source=collection_link&creator=36741567"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Sign Up",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var res = pm.response.json();\r",
+									"console.log(res)\r",
+									"pm.collectionVariables.set('email', res.data.email)"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "first_name",
+									"value": "rabbi",
+									"type": "text"
+								},
+								{
+									"key": "last_name",
+									"value": "the fast api",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "n@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "12345678",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{base_url}}/signup/"
+					},
+					"response": []
+				},
+				{
+					"name": "signin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var res = pm.response.json();\r",
+									"console.log(res.data.access_token)\r",
+									"\r",
+									"pm.collectionVariables.set('token', res.data.access_token)\r",
+									"\r",
+									"pm.collectionVariables.set('email', res.data.email)\r",
+									"pm.collectionVariables.set('refresh_token', res.data.refresh_token)\r",
+									"pm.collectionVariables.set('password', res.data.password)\r",
+									"pm.collectionVariables.set('first_name', res.data.first_name)\r",
+									"pm.collectionVariables.set('last_name', res.data.last_name)\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "{{email}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "12345678",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{base_url}}/signin/"
+					},
+					"response": []
+				},
+				{
+					"name": "signout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "refresh_token",
+									"value": "{{refresh_token}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{base_url}}/signout/"
+					},
+					"response": []
+				},
+				{
+					"name": "change-password",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "{{email}}",
+									"type": "text"
+								},
+								{
+									"key": "old_password",
+									"value": "asdfsdewq@@2adsf",
+									"type": "text"
+								},
+								{
+									"key": "new_password",
+									"value": "asdfsdewq@@2adsfw",
+									"type": "text"
+								},
+								{
+									"key": "confirm_password",
+									"value": "asdfsdewq@@2adsfw",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{base_url}}/change-password/"
+					},
+					"response": []
+				},
+				{
+					"name": "send-otp",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "{{email}}",
+									"type": "text"
+								},
+								{
+									"key": "purpose",
+									"value": "password_reset",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{base_url}}/send-otp/"
+					},
+					"response": []
+				},
+				{
+					"name": "resend-otp",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var res = pm.response.json();\r",
+									"pm.collectionVariables.set('otp', res.data.otp)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "{{email}}",
+									"type": "text"
+								},
+								{
+									"key": "purpose",
+									"value": "password_reset",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{base_url}}/resend-otp/"
+					},
+					"response": []
+				},
+				{
+					"name": "verify-otp",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "{{email}}",
+									"type": "text"
+								},
+								{
+									"key": "purpose",
+									"value": "password_reset",
+									"type": "text"
+								},
+								{
+									"key": "otp",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{base_url}}/verify-otp/"
+					},
+					"response": []
+				},
+				{
+					"name": "reset-password",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "{{email}}",
+									"type": "text"
+								},
+								{
+									"key": "otp",
+									"value": "601355",
+									"type": "text"
+								},
+								{
+									"key": "purpose",
+									"value": "password_reset",
+									"type": "text"
+								},
+								{
+									"key": "new_password",
+									"value": "12345678",
+									"type": "text"
+								},
+								{
+									"key": "confirm_password",
+									"value": "12345678",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{base_url}}/reset-password/"
+					},
+					"response": []
+				},
+				{
+					"name": "avatar-update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "avatar",
+									"type": "file",
+									"src": "/C:/Users/rafic/Desktop/image_files/ecbbd129-7a35-4dec-8dd8-0fd1ebe81062.png"
+								}
+							]
+						},
+						"url": "{{base_url}}/avatar-update/"
+					},
+					"response": []
+				},
+				{
+					"name": "profile-update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "first_name",
+									"value": "{{first_name}}",
+									"type": "text"
+								},
+								{
+									"key": "last_name",
+									"value": "{{last_name}}",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "+023092340234",
+									"type": "text"
+								},
+								{
+									"key": "accepted_terms",
+									"value": "true",
+									"type": "text"
+								},
+								{
+									"key": "avatar",
+									"type": "file",
+									"src": []
+								},
+								{
+									"key": "dob",
+									"value": "2002-11-22",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{base_url}}/profile-update/"
+					},
+					"response": []
+				},
+				{
+					"name": "profile-get",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": "{{base_url}}/profile/"
+					},
+					"response": []
+				},
+				{
+					"name": "token/refresh",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "refresh",
+									"value": "{{refresh_token}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{base_url}}/token/refresh/"
+					},
+					"response": []
+				},
+				{
+					"name": "token/verify",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "token",
+									"value": "{{refresh_token}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{base_url}}/token/verify/"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://172.16.200.94:8000/api"
+		},
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "refresh_token",
+			"value": ""
+		},
+		{
+			"key": "first_name",
+			"value": ""
+		},
+		{
+			"key": "last_name",
+			"value": ""
+		},
+		{
+			"key": "email",
+			"value": ""
+		},
+		{
+			"key": "password",
+			"value": ""
+		},
+		{
+			"key": "test_ggstin_base_url",
+			"value": "https://test-api.sandbox.co.in"
+		},
+		{
+			"key": "live_ggstin_base_url",
+			"value": "https://api.sandbox.co.in"
+		},
+		{
+			"key": "version",
+			"value": "1.0.0"
+		},
+		{
+			"key": "api_secret",
+			"value": "secret_test_226c08bb042e444f9fbc7a9e0c3bec97"
+		},
+		{
+			"key": "base_url",
+			"value": "",
+			"disabled": true
+		}
+	]
+}
