@@ -80,10 +80,11 @@ INSTALLED_APPS = [
     "debug_toolbar",
     "import_export",
     "corsheaders",
+    "social_django",
 
     # internal apps
     "apps.seeders",
-    "apps.users",
+    "apps.user",
     "apps.system_setting",
     "apps.cms",
 
@@ -125,7 +126,8 @@ WSGI_APPLICATION = "project.wsgi.application"
 #master user
 
 AUTHENTICATION_BACKENDS = [
-    "apps.users.backends.MasterUserBackend",  # our master user backend
+    "apps.user.backends.MasterUserBackend",  # our master user backend
+    'social_core.backends.google.GoogleOAuth2',  # Google OAuth2
     "django.contrib.auth.backends.ModelBackend",
 ]
 MASTER_USER_EMAIL = "rafi.cse.ahmed@gmail.com"
@@ -210,7 +212,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 # auth user model
-AUTH_USER_MODEL = "users.User"
+AUTH_USER_MODEL = "user.User"
 
 
 # Rest framework
@@ -250,6 +252,11 @@ INTERNAL_IPS = [
     "127.0.0.1",
     "localhost",
 ]
+
+# social auth settings
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = config('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = config('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
 
 
 # unfold settings

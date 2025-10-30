@@ -1,6 +1,6 @@
 import email
 
-from apps.users.managers import UserManager
+from apps.user.managers import UserManager
 from .models import User, UserProfile, OTP
 from rest_framework import  serializers
 from django.core.exceptions import ValidationError

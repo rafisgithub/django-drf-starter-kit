@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 
 from apps.cms.seed_data import seed_faq, seed_page
 from apps.system_setting.seed_data import seed_system_color, seed_system_setting, seed_social_media, seed_smtp_credentials
-from apps.users.seed_users import seed_users
+from apps.user.seed_users import seed_users
 
 
 class Command(BaseCommand):

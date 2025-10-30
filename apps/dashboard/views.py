@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponse
 from apps.system_setting.models import SystemColor
-from apps.users.models import User
+from apps.user.models import User
 from django.utils import timezone
 from datetime import datetime
 # Create your views here.

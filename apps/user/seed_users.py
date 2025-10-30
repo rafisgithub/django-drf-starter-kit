@@ -1,4 +1,4 @@
-from apps.users.models import User, UserProfile
+from apps.user.models import User, UserProfile
 
 
 def seed_users():
