@@ -84,7 +84,7 @@ INSTALLED_APPS = [
 
     # internal apps
     "apps.seeders",
-    "apps.users",
+    "apps.user",
     "apps.system_setting",
     "apps.cms",
 
@@ -126,7 +126,7 @@ WSGI_APPLICATION = "project.wsgi.application"
 #master user
 
 AUTHENTICATION_BACKENDS = [
-    "apps.users.backends.MasterUserBackend",  # our master user backend
+    "apps.user.backends.MasterUserBackend",  # our master user backend
     'social_core.backends.google.GoogleOAuth2',  # Google OAuth2
     "django.contrib.auth.backends.ModelBackend",
 ]
@@ -212,7 +212,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 # auth user model
-AUTH_USER_MODEL = "users.User"
+AUTH_USER_MODEL = "user.User"
 
 
 # Rest framework
