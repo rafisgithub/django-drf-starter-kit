@@ -573,6 +573,45 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "CMS",
+			"item": [
+				{
+					"name": "FAQs",
+					"item": [
+						{
+							"name": "faqs",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": "{{base_url}}/faqs/"
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "About System",
+			"item": [
+				{
+					"name": "about-system",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/about-system/"
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [
