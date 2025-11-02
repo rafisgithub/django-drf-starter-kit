@@ -33,25 +33,24 @@ SECRET_KEY = "django-insecure-_(4sk(m(!$$xxvz)-7!b7ibkz&2sotl0#=hv8+e*_^__qzgs18
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-if(DEBUG):
-    
-    ALLOWED_HOSTS = ['*'] 
+if DEBUG:
+    ALLOWED_HOSTS = ['*']  
     CORS_ALLOW_ALL_ORIGINS = True
     CORS_ALLOW_CREDENTIALS = True
     CSRF_TRUSTED_ORIGINS = [
-        'https://localhost', 
+        'https://localhost',
         'https://127.0.0.1',
     ]
 
 else:
-
-    ALLOWED_HOSTS = ['admin.clever-cv.de', 'clever-cv.de']
-    CORS_ALLOW_ALL_ORIGINS = False
+    ALLOWED_HOSTS = ['yourdomain.com', 'api.yourdomain.com']  
+    CORS_ALLOW_ALL_ORIGINS = False 
     CORS_ALLOW_CREDENTIALS = True
     CSRF_TRUSTED_ORIGINS = [
-        "https://admin.clever-cv.de",
-        "https://clever-cv.de",
+        'https://yourfrontend.com', 
+        'https://yourbackend.com',  
     ]
+
 
 # Application definition
 
@@ -138,21 +137,24 @@ MASTER_USER_EMAIL = "rafi.cse.ahmed@gmail.com"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 if DEBUG:
+
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
             "NAME": BASE_DIR / "db.sqlite3",
         }
     }
+    
 else:
+
     DATABASES = {
         "default": {
-            "ENGINE": "django.db.backends.mysql",
+            "ENGINE": "django.db.backends.postgresql",
             "NAME": "your_database_name",
             "USER": "your_database_user",
             "PASSWORD": "your_database_password",
-            "HOST": "localhost",
-            "PORT": 3306,
+            "HOST": "127.0.0.1",
+            "PORT": "5432",
         }
     }
 
