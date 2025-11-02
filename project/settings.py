@@ -150,8 +150,8 @@ else:
             "NAME": "your_database_name",
             "USER": "your_database_user",
             "PASSWORD": "your_database_password",
-            "HOST": "localhost",
-            "PORT": 3306,
+            "HOST": "127.0.0.1",
+            "PORT": "5432",
         }
     }
 
