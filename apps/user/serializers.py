@@ -303,10 +303,6 @@ class ResetPasswordSerializer(serializers.Serializer):
         user.save()
         OTP.objects.filter(user=user, purpose=self.validated_data['purpose']).delete()
 
-class PreparationTypeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = UserProfile
-        fields = ['preparation_type']
 
 class UpdataProfileAvatarSerializer(serializers.ModelSerializer):
     class Meta:
