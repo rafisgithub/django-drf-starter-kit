@@ -28,10 +28,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-_(4sk(m(!$$xxvz)-7!b7ibkz&2sotl0#=hv8+e*_^__qzgs18"
+SECRET_KEY = config('SECRET_KEY', default="django-insecure-_(4sk(m(!$$xxvz)-7!b7ibkz&2sotl0#=hv8+e*_^__qzgs18")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=True, cast=bool)
 
 if DEBUG:
     ALLOWED_HOSTS = ['*']  
@@ -136,25 +136,25 @@ MASTER_USER_EMAIL = "rafi.cse.ahmed@gmail.com"
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+# Database configuration based on DEBUG mode
 if DEBUG:
-
+    # Development: Use SQLite
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
             "NAME": BASE_DIR / "db.sqlite3",
         }
     }
-    
 else:
-
+    # Production: Use PostgreSQL with environment variables
     DATABASES = {
         "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": "your_database_name",
-            "USER": "your_database_user",
-            "PASSWORD": "your_database_password",
-            "HOST": "127.0.0.1",
-            "PORT": "5432",
+            "ENGINE": config('DATABASE_ENGINE', default='django.db.backends.postgresql'),
+            "NAME": config('DATABASE_NAME', default='django_db'),
+            "USER": config('DATABASE_USER', default='django_user'),
+            "PASSWORD": config('DATABASE_PASSWORD', default='django_password'),
+            "HOST": config('DATABASE_HOST', default='db'),
+            "PORT": config('DATABASE_PORT', default='5432'),
         }
     }
 

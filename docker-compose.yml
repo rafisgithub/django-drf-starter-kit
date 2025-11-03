@@ -11,7 +11,7 @@ services:
     environment:
       - PYTHONUNBUFFERED=1
       - AUTO_SEED=true
-      - DEBUG=True
+      - DEBUG=True  # SQLite mode
     entrypoint: ["/bin/bash", "/app/docker-entrypoint.sh"]
     command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 
