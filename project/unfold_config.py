@@ -60,7 +60,7 @@ def get_unfold_settings():
                         {
                             "title": _("Users"),
                             "icon": "people",
-                            "link": reverse_lazy("admin:users_user_changelist"),
+                            "link": reverse_lazy("admin:user_user_changelist"),
                         },
                     ],
                 },
