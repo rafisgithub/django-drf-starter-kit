@@ -56,6 +56,17 @@ class SignUpSerializer(serializers.ModelSerializer):
         }
 
 
+class CustomRefreshToken(RefreshToken):
+    def __init__(self, user=None):
+        super().__init__()
+        if user:
+            self.add_claims(user)
+
+    def add_claims(self, user):
+        self['id'] = user.id
+        self['email'] = user.email
+        self['avatar'] = user.avatar.url if user.avatar else None
+
 class SignInSerializer(serializers.Serializer):
 
     email = serializers.EmailField()
@@ -72,16 +83,23 @@ class SignInSerializer(serializers.Serializer):
             raise serializers.ValidationError({'password': 'Invalid password.'})
         self.user = user
         return attrs
+    
 
     def to_representation(self, instance):
+
         user = self.user
-        refresh = RefreshToken.for_user(user)
+
+        print(user)
+
+        refresh = CustomRefreshToken(user=user)
+        print("Refresh ", refresh)
+        print("Access ", refresh.access_token)
+
         return {
-            'id': user.id,
-            'email': user.email,
             'refresh_token': str(refresh),
             'access_token': str(refresh.access_token)
         }
+
 
 class SignOutSerializer(serializers.Serializer):
     refresh_token = serializers.CharField(write_only=True)
