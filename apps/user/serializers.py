@@ -236,7 +236,6 @@ class ResendOTPSerializer(serializers.Serializer):
         except:
             raise serializers.ValidationError("SMTP NOT VALID!")
         return attrs
-        return attrs
 
 class VerifyOTPSerializer(serializers.Serializer):
     email = serializers.EmailField()
