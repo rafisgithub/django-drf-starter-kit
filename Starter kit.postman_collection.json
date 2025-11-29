@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "a1767f67-7ce9-42f7-b7cd-15754a632773",
+		"_postman_id": "10e46aff-c898-4f43-beee-32a3afef92d3",
 		"name": "Starter kit",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "36741567",
-		"_collection_link": "https://rafiteam.postman.co/workspace/starterkit~4bee4d98-1082-48da-b124-642a390a1a59/collection/36741567-a1767f67-7ce9-42f7-b7cd-15754a632773?action=share&source=collection_link&creator=36741567"
+		"_collection_link": "https://rafiteam.postman.co/workspace/ppv~1561e51a-4e93-4cb6-93fe-237ff1e56af1/collection/36741567-10e46aff-c898-4f43-beee-32a3afef92d3?action=share&source=collection_link&creator=36741567"
 	},
 	"item": [
 		{
@@ -49,17 +49,17 @@
 							"formdata": [
 								{
 									"key": "first_name",
-									"value": "rabbi",
+									"value": "Rafi",
 									"type": "text"
 								},
 								{
 									"key": "last_name",
-									"value": "the fast api",
+									"value": "Ahmed",
 									"type": "text"
 								},
 								{
 									"key": "email",
-									"value": "n@gmail.com",
+									"value": "rafi@gmail.com",
 									"type": "text"
 								},
 								{
@@ -69,7 +69,16 @@
 								}
 							]
 						},
-						"url": "{{base_url}}/signup/"
+						"url": {
+							"raw": "{{base_url}}/signup/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"signup",
+								""
+							]
+						}
 					},
 					"response": []
 				},
@@ -131,7 +140,16 @@
 								}
 							]
 						},
-						"url": "{{base_url}}/signin/"
+						"url": {
+							"raw": "{{base_url}}/signin/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"signin",
+								""
+							]
+						}
 					},
 					"response": []
 				},
@@ -140,9 +158,13 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": {
-								"token": "{{token}}"
-							}
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "POST",
 						"header": [],
@@ -156,7 +178,16 @@
 								}
 							]
 						},
-						"url": "{{base_url}}/signout/"
+						"url": {
+							"raw": "{{base_url}}/signout/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"signout",
+								""
+							]
+						}
 					},
 					"response": []
 				},
@@ -165,9 +196,13 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": {
-								"token": "{{token}}"
-							}
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "POST",
 						"header": [
@@ -180,11 +215,6 @@
 						"body": {
 							"mode": "formdata",
 							"formdata": [
-								{
-									"key": "email",
-									"value": "{{email}}",
-									"type": "text"
-								},
 								{
 									"key": "old_password",
 									"value": "asdfsdewq@@2adsf",
@@ -202,7 +232,16 @@
 								}
 							]
 						},
-						"url": "{{base_url}}/change-password/"
+						"url": {
+							"raw": "{{base_url}}/change-password/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"change-password",
+								""
+							]
+						}
 					},
 					"response": []
 				},
@@ -217,23 +256,25 @@
 									""
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						},
 						{
 							"listen": "prerequest",
 							"script": {
-								"exec": [],
-								"type": "text/javascript"
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
 					"request": {
 						"auth": {
-							"type": "bearer",
-							"bearer": {
-								"token": "{{token}}"
-							}
+							"type": "noauth"
 						},
 						"method": "POST",
 						"header": [
@@ -258,7 +299,16 @@
 								}
 							]
 						},
-						"url": "{{base_url}}/send-otp/"
+						"url": {
+							"raw": "{{base_url}}/send-otp/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"send-otp",
+								""
+							]
+						}
 					},
 					"response": []
 				},
@@ -273,23 +323,25 @@
 									"pm.collectionVariables.set('otp', res.data.otp)"
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						},
 						{
 							"listen": "prerequest",
 							"script": {
-								"exec": [],
-								"type": "text/javascript"
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
 					"request": {
 						"auth": {
-							"type": "bearer",
-							"bearer": {
-								"token": "{{token}}"
-							}
+							"type": "noauth"
 						},
 						"method": "POST",
 						"header": [
@@ -314,7 +366,16 @@
 								}
 							]
 						},
-						"url": "{{base_url}}/resend-otp/"
+						"url": {
+							"raw": "{{base_url}}/resend-otp/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"resend-otp",
+								""
+							]
+						}
 					},
 					"response": []
 				},
@@ -322,10 +383,7 @@
 					"name": "verify-otp",
 					"request": {
 						"auth": {
-							"type": "bearer",
-							"bearer": {
-								"token": "{{token}}"
-							}
+							"type": "noauth"
 						},
 						"method": "POST",
 						"header": [
@@ -355,7 +413,16 @@
 								}
 							]
 						},
-						"url": "{{base_url}}/verify-otp/"
+						"url": {
+							"raw": "{{base_url}}/verify-otp/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"verify-otp",
+								""
+							]
+						}
 					},
 					"response": []
 				},
@@ -363,10 +430,7 @@
 					"name": "reset-password",
 					"request": {
 						"auth": {
-							"type": "bearer",
-							"bearer": {
-								"token": "{{token}}"
-							}
+							"type": "noauth"
 						},
 						"method": "POST",
 						"header": [
@@ -406,7 +470,16 @@
 								}
 							]
 						},
-						"url": "{{base_url}}/reset-password/"
+						"url": {
+							"raw": "{{base_url}}/reset-password/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"reset-password",
+								""
+							]
+						}
 					},
 					"response": []
 				},
@@ -415,9 +488,13 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": {
-								"token": "{{token}}"
-							}
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "PUT",
 						"header": [
@@ -437,7 +514,16 @@
 								}
 							]
 						},
-						"url": "{{base_url}}/avatar-update/"
+						"url": {
+							"raw": "{{base_url}}/avatar-update/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"avatar-update",
+								""
+							]
+						}
 					},
 					"response": []
 				},
@@ -446,9 +532,13 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": {
-								"token": "{{token}}"
-							}
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "PUT",
 						"header": [
@@ -493,18 +583,31 @@
 								}
 							]
 						},
-						"url": "{{base_url}}/profile-update/"
+						"url": {
+							"raw": "{{base_url}}/profile-update/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"profile-update",
+								""
+							]
+						}
 					},
 					"response": []
 				},
 				{
-					"name": "profile-get",
+					"name": "get-profile",
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": {
-								"token": "{{token}}"
-							}
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "PUT",
 						"header": [
@@ -518,7 +621,16 @@
 							"mode": "formdata",
 							"formdata": []
 						},
-						"url": "{{base_url}}/profile/"
+						"url": {
+							"raw": "{{base_url}}/get-profile/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"get-profile",
+								""
+							]
+						}
 					},
 					"response": []
 				},
@@ -527,9 +639,13 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": {
-								"token": "{{token}}"
-							}
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "POST",
 						"header": [
@@ -549,7 +665,17 @@
 								}
 							]
 						},
-						"url": "{{base_url}}/token/refresh/"
+						"url": {
+							"raw": "{{base_url}}/token/refresh/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"token",
+								"refresh",
+								""
+							]
+						}
 					},
 					"response": []
 				},
@@ -568,7 +694,17 @@
 								}
 							]
 						},
-						"url": "{{base_url}}/token/verify/"
+						"url": {
+							"raw": "{{base_url}}/token/verify/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"token",
+								"verify",
+								""
+							]
+						}
 					},
 					"response": []
 				}
@@ -588,7 +724,16 @@
 								},
 								"method": "GET",
 								"header": [],
-								"url": "{{base_url}}/faqs/"
+								"url": {
+									"raw": "{{base_url}}/faqs/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"faqs",
+										""
+									]
+								}
 							},
 							"response": []
 						}
@@ -607,7 +752,16 @@
 						},
 						"method": "GET",
 						"header": [],
-						"url": "{{base_url}}/about-system/"
+						"url": {
+							"raw": "{{base_url}}/about-system/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"about-system",
+								""
+							]
+						}
 					},
 					"response": []
 				}
@@ -640,10 +794,6 @@
 	],
 	"variable": [
 		{
-			"key": "base_url",
-			"value": "http://172.16.200.94:8000/api"
-		},
-		{
 			"key": "token",
 			"value": ""
 		},
@@ -666,27 +816,6 @@
 		{
 			"key": "password",
 			"value": ""
-		},
-		{
-			"key": "test_ggstin_base_url",
-			"value": "https://test-api.sandbox.co.in"
-		},
-		{
-			"key": "live_ggstin_base_url",
-			"value": "https://api.sandbox.co.in"
-		},
-		{
-			"key": "version",
-			"value": "1.0.0"
-		},
-		{
-			"key": "api_secret",
-			"value": "secret_test_226c08bb042e444f9fbc7a9e0c3bec97"
-		},
-		{
-			"key": "base_url",
-			"value": "",
-			"disabled": true
 		}
 	]
 }
