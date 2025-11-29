@@ -1,30 +1,29 @@
-import email
+from rest_framework import serializers
+from apps.social_auth.utils import Google, register_with_google
 
-from apps.user.managers import UserManager
-from apps.user.models import User
-from rest_framework import  serializers
-from rest_framework_simplejwt.tokens import RefreshToken
+from django.conf import settings
+from rest_framework.exceptions import AuthenticationFailed
 
 
-class SocialAuthSignInSerializer(serializers.Serializer):
 
-    email = serializers.EmailField()
-    refresh_token = serializers.CharField(read_only=True)
-    access_token = serializers.CharField(read_only=True)
+class GoogleSerializer(serializers.Serializer):
+    
+    access_token = serializers.CharField()
 
-    def validate(self, attrs):
-        user = User.objects.filter(email=attrs['email']).first()
-        if not user:
-           raise serializers.ValidationError({'email': 'User with this email does not exist.'})
-        self.user = user
-        return attrs
+    def validate_access_token(self, access_token):
+        user_data = Google.validate(access_token)
+        try:
+            user_data['sub']
+        except KeyError:
+            raise AuthenticationFailed('Invalid token')
+        
+        if user_data['aud'] != settings.GOOGLE_CLIENT_ID:
+            raise AuthenticationFailed("Could not verify Google token")
+        
+        user_id = user_data['sub']
+        email = user_data['email']
+        first_name = user_data['given_name']
+        last_name = user_data['family_name']
+        provider = 'google'
 
-    def to_representation(self, instance):
-        user = self.user
-        refresh = RefreshToken.for_user(user)
-        return {
-            'id': user.id,
-            'email': user.email,
-            'refresh_token': str(refresh),
-            'access_token': str(refresh.access_token)
-        }
+        return register_with_google(provider, email, first_name, last_name)

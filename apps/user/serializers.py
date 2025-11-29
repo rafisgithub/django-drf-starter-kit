@@ -94,6 +94,7 @@ class SignInSerializer(serializers.Serializer):
         print(user)
 
         refresh = CustomRefreshToken.for_user(user)
+        print("REFRESH TOKEN:", str(refresh))
 
 
         return {

@@ -1,20 +1,20 @@
 from rest_framework.views import APIView
-from social_django.utils import psa
-from apps.social_auth.serializers import SocialAuthSignInSerializer
 from apps.utils.helpers import success 
-from rest_framework.validators import ValidationError
+from apps.social_auth.serializers import GoogleSerializer
+
+from apps.utils.helpers import success, error
 
 
-class SocialAuthGoogle(APIView):
+class GoogleLoginAPIView(APIView):
+    def post(self,request):
 
-    @psa('social:complete')
+        serializer = GoogleSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            data = (serializer.validated_data)['access_token']
 
-    def get(self, request, *args, **kwargs):
-
-        serializer = SocialAuthSignInSerializer(data=request.data)
-
-        if serializer.is_valid():
-
-            return success(data=serializer.data, message="Signin successful.")
-        
-        raise ValidationError(serializer.errors)
+            return success(
+                data=data,
+                message="Login successful.",
+                status_code=200
+            )
+        return error(message="Login failed.",status_code=400,errors=serializer.errors)
