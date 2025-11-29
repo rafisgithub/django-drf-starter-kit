@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Verification</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 30px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            background-color: #5C39EC;
+            /* Primary Color */
+            padding: 20px;
+            text-align: center;
+            color: #ffffff;
+        }
+
+        .header img {
+            max-height: 60px;
+            margin-bottom: 10px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .content {
+            padding: 30px;
+            color: #333333;
+        }
+
+        .otp-box {
+            background-color: #f0f0f0;
+            border: 2px dashed #5C39EC;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            font-size: 32px;
+            font-weight: bold;
+            letter-spacing: 5px;
+            color: #5C39EC;
+            margin: 20px 0;
+        }
+
+        .footer {
+            background-color: #f9f9f9;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #888888;
+            border-top: 1px solid #eeeeee;
+        }
+
+        .footer a {
+            color: #5C39EC;
+            text-decoration: none;
+        }
+
+        .social-icons {
+            margin-top: 10px;
+        }
+
+        .social-icons img {
+            width: 24px;
+            height: 24px;
+            margin: 0 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+
+        <div class="header">
+            <!-- {% if system_info.logo %}
+            <img src="{{ system_info.get_absolute_logo_url }}" alt="{{ system_info.name }} Logo">
+            {% endif %} -->
+            <h1>{{ system_info.name }}</h1>
+        </div>
+        <div class="content">
+            <h2>Hello,</h2>
+            <p>You requested a password reset or verification for your account at <strong>{{ system_info.name }}</strong>.</p>
+            <p>Please use the following One-Time Password (OTP) to complete your request. This code is valid for 3
+                minutes.</p>
+
+            <div class="otp-box">
+                {{ otp_code }}
+            </div>
+
+            <p>If you did not request this code, please ignore this email or contact support if you have concerns.</p>
+            <p>Best regards,<br>The {{ system_info.name }} Team</p>
+        </div>
+        <div class="footer">
+            <p>&copy; {{ system_info.copyright }} {{ system_info.name }}. All rights reserved.</p>
+            <p>{{ system_info.description|truncatewords:20 }}</p>
+            <p>
+                <a href="mailto:{{ system_info.email }}">{{ system_info.email }}</a>
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>

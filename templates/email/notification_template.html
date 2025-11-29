@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Notification</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 30px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            background-color: #5C39EC;
+            /* Primary Color */
+            padding: 20px;
+            text-align: center;
+            color: #ffffff;
+        }
+
+        .header img {
+            max-height: 60px;
+            margin-bottom: 10px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .content {
+            padding: 30px;
+            color: #333333;
+        }
+
+        .notification-box {
+            background-color: #f9f9f9;
+            border-left: 4px solid #5C39EC;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #5C39EC;
+            color: #ffffff;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .footer {
+            background-color: #f9f9f9;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #888888;
+            border-top: 1px solid #eeeeee;
+        }
+
+        .footer a {
+            color: #5C39EC;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <!-- {% if system_info.logo %}
+            <img src="{{ system_info.logo.url }}" alt="{{ system_info.name }} Logo">
+            {% endif %} -->
+            <h1>{{ system_info.name }}</h1>
+        </div>
+        <div class="content">
+            <h2>Hello {{ user.first_name|default:"User" }},</h2>
+
+            <p>You have a new notification from <strong>{{ system_info.name }}</strong>:</p>
+
+            <div class="notification-box">
+                <h3>{{ notification.title }}</h3>
+                <p>{{ notification.message }}</p>
+            </div>
+
+            {% if action_url %}
+            <div style="text-align: center;">
+                <a href="{{ onboarding_link }}" class="btn">Onboarding Link</a>
+            </div>
+            {% endif %}
+
+            <p>Thank you for being with us!</p>
+            <p>Best regards,<br>The {{ system_info.name }} Team</p>
+        </div>
+        <div class="footer">
+            <p>&copy; {{ system_info.copyright }} {{ system_info.name }}. All rights reserved.</p>
+            <p>{{ system_info.description|truncatewords:20 }}</p>
+            <p>
+                <a href="mailto:{{ system_info.email }}">{{ system_info.email }}</a>
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>

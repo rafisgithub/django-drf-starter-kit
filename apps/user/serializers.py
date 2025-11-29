@@ -1,5 +1,6 @@
 import email
 
+from apps.system_setting.models import AboutSystem
 from apps.user.managers import UserManager
 from .models import User, UserProfile, OTP
 from rest_framework import  serializers
@@ -11,7 +12,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.conf import settings
 from .utils import generate_otp, send_normal_mail
 from django.utils import timezone
-from apps.utils.helpers import error
+from apps.utils.helpers import send_email, success, error
+from django.template.loader import render_to_string
 
 
 class SignUpSerializer(serializers.ModelSerializer):
@@ -174,14 +176,20 @@ class SendOTPSerializer(serializers.Serializer):
         expires_at = timezone.now() + timedelta(minutes=3)
 
         OTP.objects.update_or_create(user=user, defaults={'otp': otp_hashed, 'is_verify': False, 'purpose': purpose, 'created_at': timezone.now(), 'expires_at': expires_at})
+        
+        system_info = AboutSystem.objects.first()
+        html_content = render_to_string('email/otp_verification_template.html', {'otp_code': otp_code, 'system_info': system_info})
 
-        data = {
-            'subject': 'OTP for reset password.',
-            'body': f'Your OTP is {otp_code}. Expire in 3 minutes.',
-            'from': settings.EMAIL_HOST_USER,
-            'to': [user.email,]
-        }
-        send_normal_mail(data)
+        try:
+          send_email(
+                subject='Verification OTP',
+                body=f'Your OTP is {otp_code}. Expire in 3 minutes.',
+                to_emails=[user.email,],
+                from_email=settings.EMAIL_HOST_USER,
+                html_body=html_content
+                )
+        except:
+            raise serializers.ValidationError("SMTP NOT VALID!")
         return attrs
 
 class ResendOTPSerializer(serializers.Serializer):
@@ -214,13 +222,20 @@ class ResendOTPSerializer(serializers.Serializer):
 
         OTP.objects.update_or_create(user=user, defaults={'otp': otp_hashed, 'is_verify': False, 'purpose': purpose, 'created_at': timezone.now(), 'expires_at': expires_at})
 
-        data = {
-            'subject': 'OTP for reset password.',
-            'body': f'Your OTP is {otp_code}. Expire in 3 minutes.',
-            'from': settings.EMAIL_HOST_USER,
-            'to': [user.email,]
-        }
-        send_normal_mail(data)
+        system_info = AboutSystem.objects.first()
+        html_content = render_to_string('email/otp_verification_template.html', {'otp_code': otp_code, 'system_info': system_info})
+
+        try:
+          send_email(
+                subject='Verification OTP',
+                body=f'Your OTP is {otp_code}. Expire in 3 minutes.',
+                to_emails=[user.email,],
+                from_email=settings.EMAIL_HOST_USER,
+                html_body=html_content
+                )
+        except:
+            raise serializers.ValidationError("SMTP NOT VALID!")
+        return attrs
         return attrs
 
 class VerifyOTPSerializer(serializers.Serializer):

@@ -241,12 +241,14 @@ SIMPLE_JWT = {
 
 # email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'mail.privateemail.com'
-EMAIL_PORT = 465
-EMAIL_USE_SSL = True
-EMAIL_HOST_USER = 'support@softvencefsd.xyz'
-EMAIL_HOST_PASSWORD = 'onIhlk9t2BO1HRT8K10p'
-DEFAULT_FROM_EMAIL = 'support@softvencefsd.xyz'
+EMAIL_HOST = 'smtp.hostinger.com'
+EMAIL_PORT = 587  # Or 465 if using SSL
+EMAIL_USE_TLS = True  # If you use port 587
+
+EMAIL_HOST_USER = 'hello@clever-cv.de'
+EMAIL_HOST_PASSWORD = 'Poseidon2301!'
+DEFAULT_FROM_EMAIL = 'hello@clever-cv.de'
+
 
 
 # internal ips for debug toolbar settings
