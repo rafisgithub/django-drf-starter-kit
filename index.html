@@ -3,26 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google & GitHub Login Test</title>
+    <title>Google Login Test</title>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: Arial, sans-serif; background-color: #f0f2f5; }
         .container { max-width: 600px; margin: 50px auto; padding: 20px; text-align: center; }
         h1 { margin-bottom: 30px; color: #1a73e8; }
-        #google-signin-button, #github-signin-button { margin: 10px auto; }
-        #github-signin-button { display: inline-block; padding: 10px 20px; background-color: #24292e; color: white; text-decoration: none; border-radius: 5px; font-size: 16px; }
-        #github-signin-button:hover { background-color: #333; }
+        #google-signin-button { margin: 20px auto; }
         #response-container { margin-top: 20px; padding: 15px; background-color: white; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .hidden { display: none; }
         pre { text-align: left; white-space: pre-wrap; word-wrap: break-word; }
+        .success { color: green; }
+        .error { color: red; }
+        .loading { color: #1a73e8; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Google & GitHub Login Test</h1>
+        <h1>Google Login Test</h1>
         <div id="google-signin-button"></div>
-        <a href="#" id="github-signin-button">Sign in with GitHub</a>
         <div id="response-container" class="hidden">
             <h3>Response:</h3>
             <pre id="response-text"></pre>
@@ -30,76 +30,13 @@
     </div>
 
     <script>
+        // Configuration
         const GOOGLE_CLIENT_ID = '326975357228-bt45majt8cvnnv10icogguksktgn315o.apps.googleusercontent.com';
-        const GITHUB_CLIENT_ID = 'Ov23liPvU1kCxynIDnHQ';
         const GOOGLE_API_URL = 'http://localhost:8000/api/google-auth/';
-        const GITHUB_API_URL = 'http://localhost:8000/api/google-login/github/';
         const DASHBOARD_URL = 'https://dashboard.hoobake.com';
-        const GITHUB_AUTH_URL = `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}&scope=user:email&redirect_uri=${encodeURIComponent('http://127.0.0.1:5500/')}`;
 
-        function handleGoogleCredentialResponse(response) {
-            const idToken = response.credential;
-            sendTokenToBackend(idToken, 'google', GOOGLE_API_URL);
-        }
-
-        function sendTokenToBackend(token, provider, url) {
-            console.log(`Sending ${provider} request to ${url} with:`, { [provider === 'google' ? 'id_token' : 'code']: token });
-            fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(provider === 'google' ? { id_token: token } : { code: token })
-            })
-            .then(response => {
-                console.log(`${provider} response status:`, response.status);
-                if (!response.ok) throw new Error('Network response was not ok: ' + response.status);
-                return response.json();
-            })
-            .then(data => {
-                console.log(`${provider} backend response:`, data);
-                const responseContainer = document.getElementById('response-container');
-                const responseText = document.getElementById('response-text');
-                
-                if (data.success && data.status === 200) {
-                    const userData = {
-                        full_name: data.data.full_name,
-                        email: data.data.email,
-                        access_token: data.data.access_token || data.data.tokens?.access
-                    };
-                    console.log('Storing userData:', userData);
-                    localStorage.setItem('userData', JSON.stringify(userData));
-                    console.log('Stored userData:', localStorage.getItem('userData'));
-                    window.location.href = DASHBOARD_URL;
-                } else {
-                    responseText.textContent = JSON.stringify(data, null, 2);
-                    responseContainer.classList.remove('hidden');
-                }
-            })
-            .catch(error => {
-                console.error(`${provider} fetch error:`, error);
-                const responseContainer = document.getElementById('response-container');
-                const responseText = document.getElementById('response-text');
-                responseText.textContent = `Error: ${error.message}`;
-                responseContainer.classList.remove('hidden');
-            });
-        }
-
-        function handleGitHubCallback() {
-            console.log('Checking URL:', window.location.href);
-            const urlParams = new URLSearchParams(window.location.search);
-            const code = urlParams.get('code');
-            if (code) {
-                console.log('GitHub code:', code);
-                sendTokenToBackend(code, 'github', GITHUB_API_URL);
-                window.history.replaceState({}, document.title, '/');
-            } else {
-                console.log('No GitHub code found in URL');
-            }
-        }
-
-        window.onload = function() {
-            console.log('Page loaded at:', window.location.href);
-            handleGitHubCallback();
-
+        // Initialize Google Sign-In
+        function initializeGoogleSignIn() {
             google.accounts.id.initialize({
                 client_id: GOOGLE_CLIENT_ID,
                 callback: handleGoogleCredentialResponse
@@ -111,10 +48,96 @@
             );
 
             google.accounts.id.prompt();
+        }
 
-            const githubButton = document.getElementById('github-signin-button');
-            console.log('GitHub Auth URL:', GITHUB_AUTH_URL);
-            githubButton.href = GITHUB_AUTH_URL;
+        // Handle Google credential response
+        function handleGoogleCredentialResponse(response) {
+            showResponse('Processing Google authentication...', 'loading');
+            
+            const idToken = response.credential;
+            console.log('Google ID Token received:', idToken);
+            
+            sendTokenToBackend(idToken);
+        }
+
+        // Send token to backend
+        function sendTokenToBackend(token) {
+            console.log('Sending Google token to:', GOOGLE_API_URL);
+            
+            // Your backend expects 'access_token' field
+            const requestBody = { access_token: token };
+                
+            fetch(GOOGLE_API_URL, {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify(requestBody)
+            })
+            .then(response => {
+                console.log('Google response status:', response.status);
+                
+                if (!response.ok) {
+                    return response.json().then(errorData => {
+                        throw new Error(`Server error: ${response.status} - ${errorData.detail || 'Unknown error'}`);
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Backend response:', data);
+                
+                if (data.access_token && data.email) {
+                    // Success - store user data and redirect
+                    const userData = {
+                        email: data.email,
+                        access_token: data.access_token,
+                        refresh_token: data.refresh_token
+                    };
+                    
+                    console.log('Storing userData:', userData);
+                    localStorage.setItem('userData', JSON.stringify(userData));
+                    
+                    showResponse(`Authentication successful! Redirecting to dashboard...\n\nUser: ${data.email}`, 'success');
+                    
+                    // Redirect after a short delay
+                    setTimeout(() => {
+                        window.location.href = DASHBOARD_URL;
+                    }, 2000);
+                } else {
+                    showResponse(`Authentication failed: ${JSON.stringify(data, null, 2)}`, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Google fetch error:', error);
+                showResponse(`Error: ${error.message}`, 'error');
+            });
+        }
+
+        // Helper function to show responses
+        function showResponse(message, type = 'info') {
+            const responseContainer = document.getElementById('response-container');
+            const responseText = document.getElementById('response-text');
+            
+            responseText.textContent = message;
+            responseText.className = type;
+            responseContainer.classList.remove('hidden');
+        }
+
+        // Initialize when Google API is loaded
+        window.onload = function() {
+            if (window.google) {
+                initializeGoogleSignIn();
+            } else {
+                // If Google API isn't loaded yet, wait for it
+                const checkGoogle = setInterval(() => {
+                    if (window.google) {
+                        clearInterval(checkGoogle);
+                        initializeGoogleSignIn();
+                    }
+                }, 100);
+            }
         };
     </script>
 </body>

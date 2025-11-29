@@ -28,13 +28,9 @@ def register_with_google(email, first_name, last_name):
     old_user = User.objects.filter(email=email)
 
     if old_user.exists():
-
-      
-        
         register_user = authenticate(email=email, password=settings.GOOGLE_SECRET_KEY)
         tokens = register_user.tokens()
         return {
-            'full_name': register_user.get_full_name(),
             'email': register_user.email,
             'refresh_token': str(tokens.get('refresh')),
             'access_token': str(tokens.get('access')),
@@ -58,14 +54,13 @@ def register_with_google(email, first_name, last_name):
             'last_name': last_name
         }
 
-        user_profile = UserProfile.objects.create(**new_profile)
+        UserProfile.objects.create(**new_profile)
 
         login_user = authenticate(email=email, password=settings.GOOGLE_SECRET_KEY)
 
         tokens = login_user.tokens()
 
         return {
-            'full_name': user_profile.get_full_name(),
             'email': login_user.email,
             'refresh_token': str(tokens.get('refresh')),
             'access_token': str(tokens.get('access')),
