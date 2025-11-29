@@ -8,10 +8,10 @@ from rest_framework.exceptions import AuthenticationFailed
 
 class GoogleSerializer(serializers.Serializer):
     
-    access_token = serializers.CharField()
+    id_token = serializers.CharField()
 
-    def validate_access_token(self, access_token):
-        user_data = Google.validate(access_token)
+    def validate_id_token(self, id_token):
+        user_data = Google.validate(id_token)
         try:
             user_data['sub']
         except KeyError:
@@ -20,7 +20,7 @@ class GoogleSerializer(serializers.Serializer):
         if user_data['aud'] != settings.GOOGLE_CLIENT_ID:
             raise AuthenticationFailed("Could not verify Google token")
         
-        user_id = user_data['sub']
+        # user_id = user_data['sub']
         email = user_data['email']
         first_name = user_data['given_name']
         last_name = user_data['family_name']
