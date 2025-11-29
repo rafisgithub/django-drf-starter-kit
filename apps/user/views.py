@@ -68,7 +68,7 @@ class ChangePasswordView(APIView):
     authentication_classes = [JWTAuthentication]
 
     def post(self, request):
-        serializer = ChangePasswordSerializer(data=request.data)
+        serializer = ChangePasswordSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return success(data=[], message="Password change successfully.", code=status.HTTP_200_OK)
