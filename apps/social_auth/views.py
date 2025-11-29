@@ -1,15 +1,20 @@
 from rest_framework.views import APIView
 from apps.utils.helpers import success 
-from apps.social_auth.serializers import GoogleSerializer
+from apps.social_auth.serializers import GoogleAuthSerializer
 
 from apps.utils.helpers import success, error
 
 
 class GoogleLoginAPIView(APIView):
+
+    permission_classes = []
+
     def post(self,request):
 
-        serializer = GoogleSerializer(data=request.data)
+        serializer = GoogleAuthSerializer(data=request.data)
+        
         if serializer.is_valid(raise_exception=True):
+
             data = (serializer.validated_data)['access_token']
 
             return success(

@@ -6,7 +6,7 @@ from rest_framework.exceptions import AuthenticationFailed
 
 
 
-class GoogleSerializer(serializers.Serializer):
+class GoogleAuthSerializer(serializers.Serializer):
     
     id_token = serializers.CharField()
 
