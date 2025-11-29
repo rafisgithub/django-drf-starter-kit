@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google & GitHub Login Test</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background-color: #f0f2f5; }
+        .container { max-width: 600px; margin: 50px auto; padding: 20px; text-align: center; }
+        h1 { margin-bottom: 30px; color: #1a73e8; }
+        #google-signin-button, #github-signin-button { margin: 10px auto; }
+        #github-signin-button { display: inline-block; padding: 10px 20px; background-color: #24292e; color: white; text-decoration: none; border-radius: 5px; font-size: 16px; }
+        #github-signin-button:hover { background-color: #333; }
+        #response-container { margin-top: 20px; padding: 15px; background-color: white; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .hidden { display: none; }
+        pre { text-align: left; white-space: pre-wrap; word-wrap: break-word; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Google & GitHub Login Test</h1>
+        <div id="google-signin-button"></div>
+        <a href="#" id="github-signin-button">Sign in with GitHub</a>
+        <div id="response-container" class="hidden">
+            <h3>Response:</h3>
+            <pre id="response-text"></pre>
+        </div>
+    </div>
+
+    <script>
+        const GOOGLE_CLIENT_ID = '326975357228-bt45majt8cvnnv10icogguksktgn315o.apps.googleusercontent.com';
+        const GITHUB_CLIENT_ID = 'Ov23liPvU1kCxynIDnHQ';
+        const GOOGLE_API_URL = 'http://localhost:8000/api/google-auth/';
+        const GITHUB_API_URL = 'http://localhost:8000/api/google-login/github/';
+        const DASHBOARD_URL = 'https://dashboard.hoobake.com';
+        const GITHUB_AUTH_URL = `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}&scope=user:email&redirect_uri=${encodeURIComponent('http://127.0.0.1:5500/')}`;
+
+        function handleGoogleCredentialResponse(response) {
+            const idToken = response.credential;
+            sendTokenToBackend(idToken, 'google', GOOGLE_API_URL);
+        }
+
+        function sendTokenToBackend(token, provider, url) {
+            console.log(`Sending ${provider} request to ${url} with:`, { [provider === 'google' ? 'id_token' : 'code']: token });
+            fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(provider === 'google' ? { id_token: token } : { code: token })
+            })
+            .then(response => {
+                console.log(`${provider} response status:`, response.status);
+                if (!response.ok) throw new Error('Network response was not ok: ' + response.status);
+                return response.json();
+            })
+            .then(data => {
+                console.log(`${provider} backend response:`, data);
+                const responseContainer = document.getElementById('response-container');
+                const responseText = document.getElementById('response-text');
+                
+                if (data.success && data.status === 200) {
+                    const userData = {
+                        full_name: data.data.full_name,
+                        email: data.data.email,
+                        access_token: data.data.access_token || data.data.tokens?.access
+                    };
+                    console.log('Storing userData:', userData);
+                    localStorage.setItem('userData', JSON.stringify(userData));
+                    console.log('Stored userData:', localStorage.getItem('userData'));
+                    window.location.href = DASHBOARD_URL;
+                } else {
+                    responseText.textContent = JSON.stringify(data, null, 2);
+                    responseContainer.classList.remove('hidden');
+                }
+            })
+            .catch(error => {
+                console.error(`${provider} fetch error:`, error);
+                const responseContainer = document.getElementById('response-container');
+                const responseText = document.getElementById('response-text');
+                responseText.textContent = `Error: ${error.message}`;
+                responseContainer.classList.remove('hidden');
+            });
+        }
+
+        function handleGitHubCallback() {
+            console.log('Checking URL:', window.location.href);
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+            if (code) {
+                console.log('GitHub code:', code);
+                sendTokenToBackend(code, 'github', GITHUB_API_URL);
+                window.history.replaceState({}, document.title, '/');
+            } else {
+                console.log('No GitHub code found in URL');
+            }
+        }
+
+        window.onload = function() {
+            console.log('Page loaded at:', window.location.href);
+            handleGitHubCallback();
+
+            google.accounts.id.initialize({
+                client_id: GOOGLE_CLIENT_ID,
+                callback: handleGoogleCredentialResponse
+            });
+
+            google.accounts.id.renderButton(
+                document.getElementById('google-signin-button'),
+                { theme: 'outline', size: 'large', width: 250 }
+            );
+
+            google.accounts.id.prompt();
+
+            const githubButton = document.getElementById('github-signin-button');
+            console.log('GitHub Auth URL:', GITHUB_AUTH_URL);
+            githubButton.href = GITHUB_AUTH_URL;
+        };
+    </script>
+</body>
+</html>
