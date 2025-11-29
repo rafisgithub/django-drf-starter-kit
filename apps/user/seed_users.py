@@ -5,6 +5,7 @@ def seed_users():
     user_data = [
         {
             "email": "rafi.cse.ahmed@gmail.com",
+            "avatar": "avatars/1.jpg",
             "password": "12345678",
             "is_staff": True,
             "is_superuser": True,
@@ -13,12 +14,12 @@ def seed_users():
                 "last_name": "Ahmed",
                 "phone": "+1234567890",
                 "accepted_terms": True,
-                "avatar": "avatars/1.jpg",
                 "dob": "1990-01-01",
             },
         },
         {
             "email": "admin@admin.com",
+            "avatar": "avatars/1.jpg",
             "password": "12345678",
             "is_staff": True,
             "is_superuser": True,
@@ -27,13 +28,13 @@ def seed_users():
                 "last_name": "User",
                 "phone": "+1234567890",
                 "accepted_terms": True,
-                "avatar": "avatars/1.jpg",
                 "dob": "1990-01-01",
             },
         },
 
         {
             "email": "user1@user1.com",
+            "avatar": "avatars/2.jpg",
             "password": "12345678",
             "is_staff": False,
             "is_superuser": False,
@@ -43,12 +44,12 @@ def seed_users():
                 "last_name": "User",
                 "phone": "+12345678",
                 "accepted_terms": True,
-                "avatar": "avatars/2.jpg",
                 "dob": "1990-01-01",
             },
         },
         {
             "email": "user2@user2.com",
+            "avatar": "avatars/3.jpg",
             "password": "12345678",
             "is_staff": False,
             "is_superuser": False,
@@ -58,12 +59,12 @@ def seed_users():
                 "last_name": "User",
                 "phone": "+12345678",
                 "accepted_terms": True,
-                "avatar": "avatars/3.jpg",
                 "dob": "1990-01-01",
             },
         },
         {
             "email": "user3@user3.com",
+            "avatar": "avatars/4.jpg",
             "password": "12345678",
             "is_staff": False,
             "is_superuser": False,
@@ -72,12 +73,12 @@ def seed_users():
                 "last_name": "User",
                 "phone": "+12345678",
                 "accepted_terms": True,
-                "avatar": "avatars/4.jpg",
                 "dob": "1990-01-01",
             },
         },
         {
             "email": "user4@user4.com",
+            "avatar": "avatars/5.jpg",
             "password": "12345678",
             "is_staff": False,
             "is_superuser": False,
@@ -86,7 +87,6 @@ def seed_users():
                 "last_name": "User",
                 "phone": "+12345678",
                 "accepted_terms": True,
-                "avatar": "avatars/5.jpg",
                 "dob": "1990-01-01",
             },
         }
@@ -96,6 +96,7 @@ def seed_users():
     for user in user_data:
         user_instance = User.objects.create_user(
             email=user["email"],
+            avatar=user["avatar"],
             password=user["password"],
             is_staff=user["is_staff"],
             is_superuser=user["is_superuser"],
@@ -107,7 +108,6 @@ def seed_users():
             last_name=user["userprofile"]["last_name"],
             phone=user["userprofile"]["phone"],
             accepted_terms=user["userprofile"]["accepted_terms"],
-            avatar=user["userprofile"]["avatar"],
             dob=user["userprofile"]["dob"],
         )
 

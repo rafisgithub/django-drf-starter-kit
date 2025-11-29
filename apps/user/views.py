@@ -63,6 +63,7 @@ class SignOutView(APIView):
 
 
 class ChangePasswordView(APIView):
+    
     permission_classes = [IsAuthenticated]
     authentication_classes = [JWTAuthentication]
 

@@ -10,7 +10,13 @@ from django.contrib.auth.hashers import check_password
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    class Roles(models.TextChoices):
+        ADMIN = 'admin', _('Admin')
+        USER = 'user', _('User')
+
     email = models.EmailField(_("email address"), unique=True)
+    avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
+    role = models.CharField(max_length=20, choices=Roles.choices, default=Roles.USER)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_superuser = models.BooleanField(default=False)
@@ -31,7 +37,6 @@ class UserProfile(models.Model):
     last_name = models.CharField(max_length=30, blank=True)
     phone = models.CharField(max_length=20, blank=True, null=True)
     accepted_terms = models.BooleanField(default=False)
-    avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
     dob = models.DateField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

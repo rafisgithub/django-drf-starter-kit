@@ -57,15 +57,15 @@ class SignUpSerializer(serializers.ModelSerializer):
 
 
 class CustomRefreshToken(RefreshToken):
-    def __init__(self, user=None):
-        super().__init__()
-        if user:
-            self.add_claims(user)
-
-    def add_claims(self, user):
-        self['id'] = user.id
-        self['email'] = user.email
-        self['avatar'] = user.avatar.url if user.avatar else None
+    @classmethod
+    def for_user(cls, user):
+        token = super().for_user(user)
+        # Add custom claims
+        token['id'] = user.id
+        token['role'] = user.role 
+        token['email'] = user.email
+        return token
+    
 
 class SignInSerializer(serializers.Serializer):
 
@@ -91,9 +91,8 @@ class SignInSerializer(serializers.Serializer):
 
         print(user)
 
-        refresh = CustomRefreshToken(user=user)
-        print("Refresh ", refresh)
-        print("Access ", refresh.access_token)
+        refresh = CustomRefreshToken.for_user(user)
+
 
         return {
             'refresh_token': str(refresh),
@@ -116,22 +115,21 @@ class SignOutSerializer(serializers.Serializer):
             return ValidationError({'error': str(e)})
 
 class ChangePasswordSerializer(serializers.Serializer):
-    email = serializers.CharField()
     old_password = serializers.CharField(write_only=True)
     new_password = serializers.CharField(write_only=True)
     confirm_password = serializers.CharField(write_only=True)
 
     class Meta:
         model = User
-        fields = ['email', 'full_name', 'old_password', 'new_password', 'confirm_password']
+        fields = ['old_password', 'new_password', 'confirm_password']
 
     def validate(self, attrs):
-        email = attrs.get('email')
+        
         old_password = attrs.get('old_password')
         new_password = attrs.get('new_password')
         confirm_password = attrs.get('confirm_password')
 
-        user = User.objects.filter(email=email).first()
+        user = self.context['request'].user
         if not user:
             raise ValidationError({'error': 'User not found.'})
         
