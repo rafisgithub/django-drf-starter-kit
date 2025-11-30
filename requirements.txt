@@ -14,11 +14,6 @@ django-querycount==0.8.3
 django-unfold==0.64.2
 djangorestframework==3.16.1
 djangorestframework_simplejwt==5.5.1
-google-api-core==2.28.1
-google-api-python-client==2.187.0
-google-auth==2.43.0
-google-auth-httplib2==0.2.1
-googleapis-common-protos==1.72.0
 gunicorn==23.0.0
 httplib2==0.31.0
 idna==3.11

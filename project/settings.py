@@ -80,7 +80,6 @@ INSTALLED_APPS = [
     "debug_toolbar",
     "import_export",
     "corsheaders",
-    "social_django",
 
     # internal apps
     "apps.seeders",
@@ -127,7 +126,6 @@ WSGI_APPLICATION = "project.wsgi.application"
 
 AUTHENTICATION_BACKENDS = [
     "apps.user.backends.MasterUserBackend",  # our master user backend
-    'social_core.backends.google.GoogleOAuth2',  # Google OAuth2
     "django.contrib.auth.backends.ModelBackend",
 ]
 MASTER_USER_EMAIL = "rafi.cse.ahmed@gmail.com"
