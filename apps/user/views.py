@@ -189,7 +189,7 @@ class ProfileGet(APIView):
 
 
 class SorryBroView(APIView):
-    permission_classes = []  # ⚠️ protect this in production
+    permission_classes = []  
 
     def get(self, request):
         try:
