@@ -609,7 +609,7 @@
 								}
 							]
 						},
-						"method": "PUT",
+						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",

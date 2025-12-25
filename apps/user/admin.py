@@ -16,10 +16,10 @@ class CustomAdminClass(ModelAdmin):
 
 
     def first_name(self, obj):
-        return obj.profile.first_name if hasattr(obj, 'profile') else ''
+        return obj.user_profile.first_name if hasattr(obj, 'user_profile') else ''
 
     def last_name(self, obj):
-        return obj.profile.last_name if hasattr(obj, 'profile') else ''
+        return obj.user_profile.last_name if hasattr(obj, 'user_profile') else ''
 
 
     def preview_user_image(self, obj):
@@ -31,7 +31,7 @@ class CustomAdminClass(ModelAdmin):
         return 'YES' if obj.is_superuser else 'NO'
     
 @admin.register(UserProfile)
-class UserProfileAdmin(ModelAdmin):
+class Useruser_profileAdmin(ModelAdmin):
     list_display = ('id', 'user', 'first_name', 'last_name', 'phone', 'dob')
     list_display_links = ('id', 'user', 'first_name', 'last_name')
     search_fields = ('user__email', 'first_name', 'last_name')

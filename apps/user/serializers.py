@@ -52,8 +52,8 @@ class SignUpSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         return {
             'id': instance.id,
-            'first_name': instance.profile.first_name,
-            'last_name': instance.profile.last_name,
+            'first_name': instance.user_profile.first_name,
+            'last_name': instance.user_profile.last_name,
             'email': instance.email,
         }
 

