@@ -1,0 +1,286 @@
+{% extends 'admin/base.html' %}
+
+{% load i18n %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block title %}
+{% if subtitle %}
+{{ subtitle }} |
+{% endif %}
+
+{{ title }} | {{ site_title|default:_('Django site admin') }}
+{% endblock %}
+
+{% block branding %}
+{% include "unfold/helpers/site_branding.html" %}
+{% endblock %}
+
+{% block content %}
+
+
+
+<main class="flex-1 max-h-full p-5 overflow-hidden overflow-y-scroll">
+    
+    <!-- Start Content -->
+    <div class="grid grid-cols-1 gap-5 mt-6 sm:grid-cols-2 lg:grid-cols-4">
+
+        <div class="p-4 transition-shadow border rounded-lg shadow-sm hover:shadow-lg">
+            <div class="flex items-start justify-between">
+                <div class="flex flex-col space-y-2">
+                    <span class="text-gray-400">Total Subscriptions</span>
+                    <span class="text-lg font-semibold">{{total_subscriptions}}</span>
+                </div>
+                <svg fill="{{ system_color }}" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink" width="px" height="100px" viewBox="0 0 256.00 256.00"
+                    enable-background="new 0 0 256 178" xml:space="preserve" stroke="{{ system_color }}" stroke-width="0.00256">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <path
+                            d="M183.882,38.248c0,8.995,7.292,16.287,16.287,16.287c8.995,0,16.287-7.292,16.287-16.287s-7.292-16.287-16.287-16.287 C191.174,21.961,183.882,29.253,183.882,38.248z M167.193,92.774v-12.72c0-11.179,9.126-20.349,20.349-20.349h26.642 c11.179,0,20.349,9.126,20.349,20.349v12.72H167.193z M95.721,2.416v23.543c-2.871,0-8.236,0.615-12.1,1.784 c-10.322,3.123-19.031,10.11-24.369,21.786L2,175.584h78.75l5.069-16.893c22.193-5.386,38.809-22.446,45.51-43.894l0.084,0.001 c0.167-0.748,0.389-1.483,0.627-2.214H254V2.416H95.721z M246.125,104.709H115.408c-2.957,15.124-14.146,28.884-29.224,35.043 c-0.487,0.199-0.992,0.293-1.488,0.293c-1.552,0-3.023-0.924-3.647-2.449c-0.822-2.013,0.143-4.311,2.156-5.134 c14.768-6.032,25.085-20.66,25.105-35.583v-3.981h40.386c5.966-0.001,10.803-4.837,10.803-10.803c0-5.962-4.83-10.797-10.793-10.802 l-70.91-0.053c-2.174,0-3.938-1.763-3.938-3.938s1.763-3.938,3.938-3.938h25.799V10.291h142.529V104.709z M115.408,25.959H159.5 v7.875h-44.092V25.959z M115.408,45.647H159.5v7.875h-44.092V45.647z">
+                        </path>
+                    </g>
+                </svg>
+            </div>
+            <div>
+                <span class="text-sm text-gray-400">New Subscriptions : </span>
+                <span>{{ total_new_subscriptions }} </span>
+            </div>
+        </div>
+
+        <div class="p-4 transition-shadow border rounded-lg shadow-sm hover:shadow-lg">
+            <div class="flex items-start justify-between">
+                <div class="flex flex-col space-y-2">
+                    <span class="text-gray-400">Total Users</span>
+                    <span class="text-lg font-semibold">{{total_users}}</span>
+                </div>
+                <svg fill="{{ system_color }}" width="77px" height="77px" viewBox="0 0 32 32" version="1.1"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <title>users</title>
+                        <path
+                            d="M16 21.416c-5.035 0.022-9.243 3.537-10.326 8.247l-0.014 0.072c-0.018 0.080-0.029 0.172-0.029 0.266 0 0.69 0.56 1.25 1.25 1.25 0.596 0 1.095-0.418 1.22-0.976l0.002-0.008c0.825-3.658 4.047-6.35 7.897-6.35s7.073 2.692 7.887 6.297l0.010 0.054c0.127 0.566 0.625 0.982 1.221 0.982 0.69 0 1.25-0.559 1.25-1.25 0-0.095-0.011-0.187-0.031-0.276l0.002 0.008c-1.098-4.78-5.305-8.295-10.337-8.316h-0.002zM9.164 11.102c0 0 0 0 0 0 2.858 0 5.176-2.317 5.176-5.176s-2.317-5.176-5.176-5.176c-2.858 0-5.176 2.317-5.176 5.176v0c0.004 2.857 2.319 5.172 5.175 5.176h0zM9.164 3.25c0 0 0 0 0 0 1.478 0 2.676 1.198 2.676 2.676s-1.198 2.676-2.676 2.676c-1.478 0-2.676-1.198-2.676-2.676v0c0.002-1.477 1.199-2.674 2.676-2.676h0zM22.926 11.102c2.858 0 5.176-2.317 5.176-5.176s-2.317-5.176-5.176-5.176c-2.858 0-5.176 2.317-5.176 5.176v0c0.004 2.857 2.319 5.172 5.175 5.176h0zM22.926 3.25c1.478 0 2.676 1.198 2.676 2.676s-1.198 2.676-2.676 2.676c-1.478 0-2.676-1.198-2.676-2.676v0c0.002-1.477 1.199-2.674 2.676-2.676h0zM31.311 19.734c-0.864-4.111-4.46-7.154-8.767-7.154-0.395 0-0.784 0.026-1.165 0.075l0.045-0.005c-0.93-2.116-3.007-3.568-5.424-3.568-2.414 0-4.49 1.448-5.407 3.524l-0.015 0.038c-0.266-0.034-0.58-0.057-0.898-0.063l-0.009-0c-4.33 0.019-7.948 3.041-8.881 7.090l-0.012 0.062c-0.018 0.080-0.029 0.173-0.029 0.268 0 0.691 0.56 1.251 1.251 1.251 0.596 0 1.094-0.417 1.22-0.975l0.002-0.008c0.684-2.981 3.309-5.174 6.448-5.186h0.001c0.144 0 0.282 0.020 0.423 0.029 0.056 3.218 2.679 5.805 5.905 5.805 3.224 0 5.845-2.584 5.905-5.794l0-0.006c0.171-0.013 0.339-0.035 0.514-0.035 3.14 0.012 5.765 2.204 6.442 5.14l0.009 0.045c0.126 0.567 0.625 0.984 1.221 0.984 0.69 0 1.249-0.559 1.249-1.249 0-0.094-0.010-0.186-0.030-0.274l0.002 0.008zM16 18.416c-0 0-0 0-0.001 0-1.887 0-3.417-1.53-3.417-3.417s1.53-3.417 3.417-3.417c1.887 0 3.417 1.53 3.417 3.417 0 0 0 0 0 0.001v-0c-0.003 1.886-1.53 3.413-3.416 3.416h-0z">
+                        </path>
+                    </g>
+                </svg>
+            </div>
+            <div>
+                <span class="text-sm text-gray-400">New Users : </span>
+                <span>{{ current_month_signups }} </span>
+            </div>
+        </div>
+
+        <div class="p-4 transition-shadow border rounded-lg shadow-sm hover:shadow-lg">
+            <div class="flex items-start justify-between">
+                <div class="flex flex-col space-y-2">
+                    <span class="text-gray-400">Total Income</span>
+                    <span class="text-lg font-semibold">{{total_income}}</span>
+                </div>
+                <svg fill="{{ system_color }}" width="77px" height="77px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <g data-name="10. Growth" id="_10._Growth">
+                            <path
+                                d="M17,12.05V11h3a5,5,0,0,0,5-5V4a1,1,0,0,0-1-1H20a4.92,4.92,0,0,0-3,1V1a1,1,0,0,0-2,0V2a4.92,4.92,0,0,0-3-1H8A1,1,0,0,0,7,2V4a5,5,0,0,0,5,5h3v3.05a10,10,0,1,0,2,0Zm3-7h3V6a3,3,0,0,1-3,3H17V8A3,3,0,0,1,20,5ZM9,4V3h3a3,3,0,0,1,3,3V7H12A3,3,0,0,1,9,4Zm7,26a8,8,0,1,1,8-8A8,8,0,0,1,16,30Z">
+                            </path>
+                            <path
+                                d="M16,19h2a1,1,0,0,0,0-2H17a1,1,0,0,0-2,0v.18A3,3,0,0,0,16,23a1,1,0,0,1,0,2H14a1,1,0,0,0,0,2h1a1,1,0,0,0,2,0v-.18A3,3,0,0,0,16,21a1,1,0,0,1,0-2Z">
+                            </path>
+                            <path
+                                d="M5.71,7.29l-2-2a1,1,0,0,0-1.42,0l-2,2A1,1,0,0,0,1.71,8.71L2,8.41V11a1,1,0,0,0,2,0V8.41l.29.3a1,1,0,0,0,1.42,0A1,1,0,0,0,5.71,7.29Z">
+                            </path>
+                            <path
+                                d="M31.71,13.29l-2-2a1,1,0,0,0-1.42,0l-2,2a1,1,0,0,0,1.42,1.42l.29-.3V17a1,1,0,0,0,2,0V14.41l.29.3a1,1,0,0,0,1.42,0A1,1,0,0,0,31.71,13.29Z">
+                            </path>
+                        </g>
+                    </g>
+                </svg>
+            </div>
+            <div>
+                <span class="text-sm text-gray-400">New Users : </span>
+                <span>{{ current_month_signups }} </span>
+            </div>
+        </div>
+
+        <div class="p-4 transition-shadow border rounded-lg shadow-sm hover:shadow-lg">
+            <div class="flex items-start justify-between">
+                <div class="flex flex-col space-y-2">
+                    <span class="text-gray-400">Total Super Admin</span>
+                    <span class="text-lg font-semibold">{{supper_admins}}</span>
+                </div>
+                <svg fill="{{ system_color }}" height="77px" width="77px" version="1.1" id="Capa_1"
+                    xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                    viewBox="0 0 474.565 474.565" xml:space="preserve">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <g>
+                            <path
+                                d="M255.204,102.3c-0.606-11.321-12.176-9.395-23.465-9.395C240.078,95.126,247.967,98.216,255.204,102.3z">
+                            </path>
+                            <path
+                                d="M134.524,73.928c-43.825,0-63.997,55.471-28.963,83.37c11.943-31.89,35.718-54.788,66.886-63.826 C163.921,81.685,150.146,73.928,134.524,73.928z">
+                            </path>
+                            <path
+                                d="M43.987,148.617c1.786,5.731,4.1,11.229,6.849,16.438L36.44,179.459c-3.866,3.866-3.866,10.141,0,14.015l25.375,25.383 c1.848,1.848,4.38,2.888,7.019,2.888c2.61,0,5.125-1.04,7.005-2.888l14.38-14.404c2.158,1.142,4.55,1.842,6.785,2.827 c0-0.164-0.016-0.334-0.016-0.498c0-11.771,1.352-22.875,3.759-33.302c-17.362-11.174-28.947-30.57-28.947-52.715 c0-34.592,28.139-62.739,62.723-62.739c23.418,0,43.637,13.037,54.43,32.084c11.523-1.429,22.347-1.429,35.376,1.033 c-1.676-5.07-3.648-10.032-6.118-14.683l14.396-14.411c1.878-1.856,2.918-4.38,2.918-7.004c0-2.625-1.04-5.148-2.918-7.004 l-25.361-25.367c-1.94-1.941-4.472-2.904-7.003-2.904c-2.532,0-5.063,0.963-6.989,2.904l-14.442,14.411 c-5.217-2.764-10.699-5.078-16.444-6.825V9.9c0-5.466-4.411-9.9-9.893-9.9h-35.888c-5.451,0-9.909,4.434-9.909,9.9v20.359 c-5.73,1.747-11.213,4.061-16.446,6.825L75.839,22.689c-1.942-1.941-4.473-2.904-7.005-2.904c-2.531,0-5.077,0.963-7.003,2.896 L36.44,48.048c-1.848,1.864-2.888,4.379-2.888,7.012c0,2.632,1.04,5.148,2.888,7.004l14.396,14.403 c-2.75,5.218-5.063,10.708-6.817,16.438H23.675c-5.482,0-9.909,4.441-9.909,9.915v35.889c0,5.458,4.427,9.908,9.909,9.908H43.987z">
+                            </path>
+                            <path
+                                d="M354.871,340.654c15.872-8.705,26.773-25.367,26.773-44.703c0-28.217-22.967-51.168-51.184-51.168 c-9.923,0-19.118,2.966-26.975,7.873c-4.705,18.728-12.113,36.642-21.803,52.202C309.152,310.022,334.357,322.531,354.871,340.654z ">
+                            </path>
+                            <path
+                                d="M460.782,276.588c0-5.909-4.799-10.693-10.685-10.693H428.14c-1.896-6.189-4.411-12.121-7.393-17.75l15.544-15.544 c2.02-2.004,3.137-4.721,3.137-7.555c0-2.835-1.118-5.553-3.137-7.563l-27.363-27.371c-2.08-2.09-4.829-3.138-7.561-3.138 c-2.734,0-5.467,1.048-7.547,3.138l-15.576,15.552c-5.623-2.982-11.539-5.481-17.751-7.369v-21.958 c0-5.901-4.768-10.685-10.669-10.685H311.11c-2.594,0-4.877,1.04-6.739,2.578c3.26,11.895,5.046,24.793,5.046,38.552 c0,8.735-0.682,17.604-1.956,26.423c7.205-2.656,14.876-4.324,22.999-4.324c36.99,0,67.086,30.089,67.086,67.07 c0,23.637-12.345,44.353-30.872,56.303c13.48,14.784,24.195,32.324,31.168,51.976c1.148,0.396,2.344,0.684,3.54,0.684 c2.733,0,5.467-1.04,7.563-3.13l27.379-27.371c2.004-2.004,3.106-4.721,3.106-7.555s-1.102-5.551-3.106-7.563l-15.576-15.552 c2.982-5.621,5.497-11.555,7.393-17.75h21.957c2.826,0,5.575-1.118,7.563-3.138c2.004-1.996,3.138-4.72,3.138-7.555 L460.782,276.588z">
+                            </path>
+                            <path
+                                d="M376.038,413.906c-16.602-48.848-60.471-82.445-111.113-87.018c-16.958,17.958-37.954,29.351-61.731,29.351 c-23.759,0-44.771-11.392-61.713-29.351c-50.672,4.573-94.543,38.17-111.145,87.026l-9.177,27.013 c-2.625,7.773-1.368,16.338,3.416,23.007c4.783,6.671,12.486,10.631,20.685,10.631h315.853c8.215,0,15.918-3.96,20.702-10.631 c4.767-6.669,6.041-15.234,3.4-23.007L376.038,413.906z">
+                            </path>
+                            <path
+                                d="M120.842,206.782c0,60.589,36.883,125.603,82.352,125.603c45.487,0,82.368-65.014,82.368-125.603 C285.563,81.188,120.842,80.939,120.842,206.782z">
+                            </path>
+                        </g>
+                    </g>
+                </svg>
+            </div>
+            <div>
+                <span class="text-sm text-gray-400">New Users : </span>
+                <span>{{ current_month_signups }} </span>
+            </div>
+        </div>
+    </div>
+
+    <h3 class="mt-3 text-xl">Users</h3>
+    <div class="flex flex-col mt-6 w-full">
+        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8 w-full">
+            <div class="inline-block min-w-full py-1 align-middle sm:px-6 lg:px-8 w-full">
+                <div class="overflow-hidden border-b border-gray-200 rounded-md shadow-md w-full">
+                    <div id="chart" class="py-24"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+<script>
+    // Define the helper first
+    function getChartTooltipTheme() {
+        return document.documentElement.classList.contains("dark") ? "dark" : "light";
+    }
+
+    document.addEventListener('alpine:initialized', () => {
+        // Now Alpine has processed x-bind:class and added 'dark' if needed
+        console.log("Alpine initialized, current theme:", getChartTooltipTheme());
+
+        // Now initialize ApexCharts
+        initializeChart();
+    });
+
+    function initializeChart() {
+        var currect_year = new Date().getFullYear();
+        var data = JSON.parse("{{ data|escapejs }}"); // Safe escaping
+
+        var options = {
+            series: [{
+                name: "New Users Signup",
+                data: data,
+            }],
+            tooltip: {
+                theme: getChartTooltipTheme() // Correct theme now
+            },
+            chart: {
+                height: 350,
+                type: "area",
+            },
+            colors: ["{{ system_color }}"],
+            plotOptions: {
+                bar: {
+                    borderRadius: 10,
+                    dataLabels: {
+                        position: "top",
+                    },
+                },
+            },
+            dataLabels: {
+                enabled: true,
+                formatter: function (val) {
+                    return val + "%";
+                },
+                offsetY: -20,
+                style: {
+                    fontSize: "12px",
+                    colors: ["{{ system_color }}"],
+                },
+                background: {
+                    enabled: true,
+                    foreColor: "#fff",
+                    padding: 4,
+                    borderRadius: 2,
+                    borderWidth: 0,
+                    borderColor: "{{ system_color }}",
+                    opacity: 0.9,
+                },
+            },
+            xaxis: {
+                categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                labels: {
+                    style: {
+                        colors: "{{ system_color }}",
+                        fontSize: "12px",
+                    },
+                },
+                position: "top",
+                axisBorder: { show: false },
+                axisTicks: { show: false },
+                crosshairs: {
+                    fill: {
+                        type: "gradient",
+                        gradient: {
+                            colorFrom: "{{ system_color }}",
+                            colorTo: "{{ system_color }}",
+                            stops: [0, 100],
+                            opacityFrom: 0.4,
+                            opacityTo: 0.5,
+                        },
+                    },
+                },
+                tooltip: { enabled: true },
+            },
+            yaxis: {
+                axisBorder: { show: false },
+                axisTicks: { show: false },
+                labels: { show: false }
+            },
+            title: {
+                text: `Monthly new Users Signups ${currect_year}`,
+                floating: true,
+                offsetY: 330,
+                align: "center",
+                style: {
+                    color: "{{ system_color }}",
+                },
+            },
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();
+
+        // Watch for theme changes
+        const observer = new MutationObserver(() => {
+            chart.updateOptions({
+                tooltip: { theme: getChartTooltipTheme() }
+            });
+        });
+
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    }
+</script>
+{% endblock %}
