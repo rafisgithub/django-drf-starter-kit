@@ -36,9 +36,26 @@ class SignUpView(APIView):
     def post(self, request):
 
         serializer = SignUpSerializer(data=request.data, context={'request': request})
+        
         if serializer.is_valid():
             serializer.save()
-            return success(data=serializer.data,message="User created successfully.",status_code=status.HTTP_201_CREATED)
+            result = serializer.data
+            
+            
+            tokens = {
+                'access': result['access'],
+                'refresh': result['refresh']
+            }
+            
+            response = create_hybrid_auth_response(
+                data=result['user'],
+                tokens=tokens,
+                request=request,
+                message="Signup successful.",
+                status_code=status.HTTP_201_CREATED
+            )
+            
+            return response
         raise ValidationError(serializer.errors)
 
 class SignInView(APIView):
