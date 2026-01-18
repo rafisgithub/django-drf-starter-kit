@@ -1,10 +1,24 @@
-# Contributing to DRF Starter Kit
+# Contributing to Django DRF Starter Kit
 
-Thanks for your interest in contributing to this project! ❤️
+Thank you for considering contributing 🎉
 
-## Steps
+## How to Contribute
+1. Fork the repository
+2. Create a new branch (`feature/your-feature-name`)
+3. Make your changes
+4. Commit with clear messages
+5. Push and open a Pull Request
 
-1. Fork this repository.
-2. Clone your fork:
-   ```bash
-   git clone https://github.com/your-user-name/drf-starter-kit.git
+## Code Style
+- Follow PEP8
+- Use meaningful variable names
+- Keep functions small and clean
+
+## Pull Request Rules
+- One feature or fix per PR
+- Add comments where necessary
+- Update documentation if needed
+
+## Issues
+- Use issues for bugs, ideas, or questions
+- Please check existing issues before creating a new one
