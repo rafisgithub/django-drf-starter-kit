@@ -238,6 +238,33 @@ SIMPLE_JWT = {
 
 
 
+# ============================================
+# Hybrid Authentication Security Settings
+# ============================================
+
+# User-Agent Binding (prevents token theft across different devices/browsers)
+ENABLE_USER_AGENT_BINDING = True  # Set to False if you have issues with mobile apps
+
+# CSRF Protection for Cookie-based Auth (optional, adds extra security for web clients)
+ENABLE_CSRF_FOR_COOKIES = False  # Enable in production if needed
+
+# Cookie Settings
+ACCESS_TOKEN_COOKIE_MAX_AGE = 3600  # 1 hour in seconds
+REFRESH_TOKEN_COOKIE_MAX_AGE = 604800  # 7 days in seconds
+
+# Cookie Domain - Set to None in development to allow all subdomains/IPs
+# In production, set to your actual domain (e.g., '.yourdomain.com')
+SESSION_COOKIE_DOMAIN = None  # None = defaults to current domain only
+
+# Production Cookie Security (automatically enabled when DEBUG=False)
+SESSION_COOKIE_SECURE = not DEBUG  # HTTPS only in production
+CSRF_COOKIE_SECURE = not DEBUG  # HTTPS only in production
+SESSION_COOKIE_HTTPONLY = True  # XSS protection
+CSRF_COOKIE_HTTPONLY = True  # XSS protection
+SESSION_COOKIE_SAMESITE = 'None' if not DEBUG else 'Lax'  # 'None' requires HTTPS in production
+CSRF_COOKIE_SAMESITE = 'None' if not DEBUG else 'Lax'  # 'None' allows cross-origin
+
+
 
 # email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
