@@ -17,7 +17,7 @@ from .views import (
     ResetPasswordView,
     UpdataProfileAvatarView,
     UpdateProfileView,
-    ProfileGet,
+    GetProfileView,
 )
 
 urlpatterns = [
@@ -33,9 +33,9 @@ urlpatterns = [
     path('reset-password/', ResetPasswordView.as_view(), name='reset-password'),
 
     # profile
-    path('avatar-update/', UpdataProfileAvatarView.as_view(), name='avatar-update'),
-    path('profile-update/', UpdateProfileView.as_view(), name='profile-update'),
-    path('profile-get/', ProfileGet.as_view(), name='profile-get'),
+    path('update-avatar/', UpdataProfileAvatarView.as_view(), name='avatar-update'),
+    path('update-profile/', UpdateProfileView.as_view(), name='profile-update'),
+    path('get-profile/', GetProfileView.as_view(), name='get-profile'),
 
     path("token/refresh/", CookieTokenRefreshView.as_view(), name="token_refresh"),
     path("token/verify/", CookieTokenVerifyView.as_view(), name="token_verify"),

@@ -62,6 +62,7 @@ class SignUpSerializer(serializers.ModelSerializer):
         purpose = validated_data.pop('purpose')
         
         user = User.objects.create_user(email=email, password=password, **validated_data)
+        UserProfile.objects.create(user=user)
         
 
         otp_code = generate_otp()
@@ -418,19 +419,5 @@ class UserSerializer(serializers.ModelSerializer):
         ]
 
 
-# UserProfile
-class UserProfileSerializer(serializers.ModelSerializer):
 
-    class Meta:
-        model = UserProfile
-        fields = [
-            "user",
-            "first_name",
-            "last_name",
-            "phone",
-            "accepted_terms",
-            "dob",
-            "created_at",
-            "updated_at",
-        ]
 

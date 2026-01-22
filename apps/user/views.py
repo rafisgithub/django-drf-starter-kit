@@ -1,4 +1,4 @@
-from .models import UserProfile
+from .models import User, UserProfile
 from rest_framework.exceptions import ValidationError
 from rest_framework.views import APIView
 from rest_framework import status
@@ -24,7 +24,6 @@ from .serializers import (
     VerifyOTPSerializer,
     ResetPasswordSerializer,
     UpdataProfileAvatarSerializer,
-    UserProfileSerializer,
 )
 
 from apps.utils.helpers import success, error
@@ -205,18 +204,16 @@ class UpdateProfileView(APIView):
         user = request.user
 
         try:
-            userProfile = UserProfile.objects.select_related('user').get(user=user)
-        except UserProfile.DoesNotExist:
-            return error(message="User not found.", status_code=status.HTTP_400_BAD_REQUEST, errors=[])
-
-        serializer = UserProfileSerializer(userProfile, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return success(data=serializer.data, message="Profile update successfully.", status_code=status.HTTP_200_OK)
-        return error(message="Profile update failed.", status_code=status.HTTP_400_BAD_REQUEST, errors=serializer.errors)
+            user = User.objects.get(id=user.id)
+            name = request.data.get('full_name', '')
+            user.full_name = name
+            user.save()
+            return success(data={'full_name': user.full_name}, message="Profile update successfully.", status_code=status.HTTP_200_OK)
+        except User.DoesNotExist:
+            return error(message="Profile update failed.", status_code=status.HTTP_400_BAD_REQUEST, errors={"error": "User does not exist."})
 
 
-class ProfileGet(APIView):
+class GetProfileView(APIView):
     permission_classes = [IsAuthenticated]
     authentication_classes = [CookieJWTAuthentication]
 
@@ -224,20 +221,20 @@ class ProfileGet(APIView):
         user = request.user
 
         try:
-            profile = UserProfile.objects.select_related('user').get(user=user)
+            profile = user.user_profile
         except UserProfile.DoesNotExist:
-            return success(data=[], message="Profile not found.", status_code=status.HTTP_200_OK)
+            return success(
+                data={},
+                message="Profile not found.",
+                status_code=status.HTTP_200_OK
+            )
 
         data = {
-            'id': profile.id,
-            'email': profile.user.email,
-            'first_name': profile.first_name,
-            'last_name': profile.last_name,
-            'avater': profile.user.avatar.url if profile.user.avatar else None,
+            'user_id': user.id,
+            'email': user.email,
+            'full_name': user.full_name,
             'phone': profile.phone,
-            'accepted_terms': profile.accepted_terms,
-            'created_at': profile.created_at,
-            'updated_at': profile.updated_at,
+            'dob': profile.dob,
         }
         return success(data=data, message="Profile get successfully.", status_code=status.HTTP_200_OK)
 

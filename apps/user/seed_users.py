@@ -1,4 +1,4 @@
-from apps.user.models import User
+from apps.user.models import User, UserProfile
 
 
 
@@ -82,6 +82,10 @@ def seed_users():
             is_superuser=user["is_superuser"],
             term_and_condition_accepted=user["term_and_condition_accepted"],
         )
+         
+         UserProfile.objects.create(
+            user=User.objects.get(email=user["email"])
+            )
 
 
     print("✅ User data seeded successfully.")
