@@ -19,6 +19,20 @@ if DEBUG:
     ALLOWED_HOSTS = ['*']  
     CORS_ALLOW_ALL_ORIGINS = True
     CORS_ALLOW_CREDENTIALS = True
+
+    CORS_ALLOW_HEADERS = [
+        'accept',
+        'accept-encoding',
+        'authorization',
+        'content-type',
+        'dnt',
+        'origin',
+        'user-agent',
+        'x-csrftoken',
+        'x-requested-with',
+        'x-client-type',
+        'ngrok-skip-browser-warning',
+    ]
    
     CSRF_TRUSTED_ORIGINS = [
         'https://localhost',
@@ -265,14 +279,15 @@ SIMPLE_JWT = {
 
 
 
+
 # ============================================
 # Cookie SameSite and Secure Configuration
 # ============================================
 if CROSS_ORIGIN_DEVELOPMENT and DEBUG:
 
-    SESSION_COOKIE_SAMESITE = 'Lax'  
-    CSRF_COOKIE_SAMESITE = 'Lax'
-    SESSION_COOKIE_SECURE = False    
+    SESSION_COOKIE_SAMESITE = 'None'  
+    CSRF_COOKIE_SAMESITE = 'None'
+    SESSION_COOKIE_SECURE = True    
     CSRF_COOKIE_SECURE = True
 
 else:
