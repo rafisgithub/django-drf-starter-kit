@@ -85,12 +85,7 @@ def set_auth_cookies(response, access_token, refresh_token, secure=False):
 
 
 def clear_auth_cookies(response):
-    """
-    Clear authentication cookies on logout.
-    
-    Args:
-        response: Django Response object
-    """
+
     domain = getattr(settings, 'SESSION_COOKIE_DOMAIN', None)
     
     response.delete_cookie('access_token', domain=domain)

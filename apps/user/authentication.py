@@ -16,22 +16,7 @@ def enforce_csrf(request):
 
 
 class HybridJWTAuthentication(JWTAuthentication):
-    """
-    Hybrid JWT Authentication supporting both:
-    1. Web clients: HttpOnly cookies (access_token, refresh_token)
-    2. Mobile clients: Authorization header (Bearer token)
-    
-    Priority:
-    - Authorization header first (for mobile apps)
-    - Cookies second (for web apps)
-    - Falls back gracefully
-    
-    Security Features:
-    - User-Agent binding (optional, configurable)
-    - CSRF protection for cookie auth (optional, configurable)
-    - Token validation
-    """
-    
+
     def authenticate(self, request):
         # Detect client type (set by ClientTypeMiddleware)
         is_mobile = getattr(request, 'is_mobile_client', False)

@@ -176,6 +176,7 @@ class SignOutSerializer(serializers.Serializer):
                      pass 
         except Exception as e:
             return ValidationError({'error': str(e)})
+        
 
 class ChangePasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(write_only=True)

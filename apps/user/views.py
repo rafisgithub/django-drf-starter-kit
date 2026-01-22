@@ -8,6 +8,7 @@ from rest_framework_simplejwt.views import TokenRefreshView, TokenVerifyView
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 from .authentication import CookieJWTAuthentication
 from rest_framework.validators import ValidationError
+from .utils import clear_auth_cookies
 
 
 # Use hybrid response utility
@@ -88,13 +89,7 @@ class SignInView(APIView):
 
 
 class SignOutView(APIView):
-    """
-    Hybrid SignOut View
-    
-    Supports both Web and Mobile clients:
-    - Web: Blacklists token from cookies, clears cookies
-    - Mobile: Blacklists token from request body
-    """
+  
     
     permission_classes = [IsAuthenticated]
     authentication_classes = [CookieJWTAuthentication]
@@ -107,6 +102,8 @@ class SignOutView(APIView):
         if 'access_token' not in data and 'access_token' in request.COOKIES:
             data['access_token'] = request.COOKIES['access_token']
         
+        print("COOKIES:", request.COOKIES)
+        
         serializer = SignOutSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
@@ -117,11 +114,11 @@ class SignOutView(APIView):
             # Clear cookies for web clients
             is_web = getattr(request, 'is_web_client', True)
             if is_web or 'access_token' in request.COOKIES:
-                from .utils import clear_auth_cookies
                 clear_auth_cookies(response)
             
             return response
         return error(message="Logout failed.", status_code=status.HTTP_400_BAD_REQUEST, errors=serializer.errors)
+
 
 
 class ChangePasswordView(APIView):
