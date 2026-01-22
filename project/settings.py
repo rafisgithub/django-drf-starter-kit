@@ -19,19 +19,7 @@ if DEBUG:
     ALLOWED_HOSTS = ['*']  
     CORS_ALLOW_ALL_ORIGINS = True
     CORS_ALLOW_CREDENTIALS = True
-    CORS_ALLOW_HEADERS = [
-        'accept',
-        'accept-encoding',
-        'authorization',
-        'content-type',
-        'dnt',
-        'origin',
-        'user-agent',
-        'x-csrftoken',
-        'x-requested-with',
-        'x-client-type',
-        'ngrok-skip-browser-warning',
-    ]
+   
     CSRF_TRUSTED_ORIGINS = [
         'https://localhost',
         'https://127.0.0.1',
@@ -271,65 +259,20 @@ REST_FRAMEWORK = {
 # ============================================
 SIMPLE_JWT = {
     # Token Lifetimes
-    "ACCESS_TOKEN_LIFETIME": datetime.timedelta(minutes=60),  # 1 hour
-    "REFRESH_TOKEN_LIFETIME": datetime.timedelta(days=7),  # 7 days
-    "REMEMBER_ME_REFRESH_LIFETIME": datetime.timedelta(days=30),  # 30 days for "Remember Me"
-    
-    # Token Rotation & Security
-    "ROTATE_REFRESH_TOKENS": True,  # Generate new refresh token on refresh
-    "BLACKLIST_AFTER_ROTATION": True,  # Blacklist old refresh tokens
-    "UPDATE_LAST_LOGIN": False,  # Don't update last_login on token refresh
-    
-    # Algorithm & Keys
-    "ALGORITHM": "HS256",  # Use RS256 with public/private keys for better security in production
-    "SIGNING_KEY": SECRET_KEY,
-    "VERIFYING_KEY": None,
-    
-    # Token Claims
-    "AUTH_HEADER_TYPES": ("Bearer",),
-    "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
-    "USER_ID_FIELD": "id",
-    "USER_ID_CLAIM": "user_id",
-    
-    # Token Validation
-    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
-    "TOKEN_TYPE_CLAIM": "token_type",
-    
-    # Additional Security
-    "JTI_CLAIM": "jti",  # Unique token identifier for blacklisting
+    "ACCESS_TOKEN_LIFETIME": datetime.timedelta(minutes=60),  
+    "REFRESH_TOKEN_LIFETIME": datetime.timedelta(days=7),  
 }
 
 
-# ============================================
-# Hybrid Authentication Security Settings
-# ============================================
-
-# User-Agent Binding (prevents token theft across different devices/browsers)
-ENABLE_USER_AGENT_BINDING = True  # Set to False if you have issues with mobile apps
-
-# CSRF Protection for Cookie-based Auth (optional, adds extra security for web clients)
-ENABLE_CSRF_FOR_COOKIES = False  # Enable in production if needed
-
-# Cookie Settings
-ACCESS_TOKEN_COOKIE_MAX_AGE = 3600  # 1 hour in seconds
-REFRESH_TOKEN_COOKIE_MAX_AGE = 604800  # 7 days in seconds
-
-# Cookie Domain - Set to None in development to allow all subdomains/IPs
-# In production, set to your actual domain (e.g., '.yourdomain.com')
-SESSION_COOKIE_DOMAIN = None  # None = defaults to current domain only
-
-# Production Cookie Security (automatically enabled when DEBUG=False)
-SESSION_COOKIE_HTTPONLY = True  # XSS protection
-CSRF_COOKIE_HTTPONLY = True  # XSS protection
 
 # ============================================
 # Cookie SameSite and Secure Configuration
 # ============================================
 if CROSS_ORIGIN_DEVELOPMENT and DEBUG:
 
-    SESSION_COOKIE_SAMESITE = 'None'  
-    CSRF_COOKIE_SAMESITE = 'None'
-    SESSION_COOKIE_SECURE = True    
+    SESSION_COOKIE_SAMESITE = 'Lax'  
+    CSRF_COOKIE_SAMESITE = 'Lax'
+    SESSION_COOKIE_SECURE = False    
     CSRF_COOKIE_SECURE = True
 
 else:

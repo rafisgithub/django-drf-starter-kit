@@ -25,7 +25,7 @@ class CustomRefreshToken(RefreshToken):
         token["uah"] = user_agent_hash
 
         if remember_me:
-            token.set_exp(lifetime=settings.SIMPLE_JWT["REMEMBER_ME_REFRESH_LIFETIME"])
+            token.set_exp(lifetime=settings.SIMPLE_JWT["REFRESH_TOKEN_LIFETIME"] * 10)  
         else:
             token.set_exp(lifetime=settings.SIMPLE_JWT["REFRESH_TOKEN_LIFETIME"])
 
@@ -37,7 +37,7 @@ class SignUpSerializer(serializers.ModelSerializer):
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)
     purpose = serializers.CharField(write_only=True)
-    role = serializers.CharField()
+    role = serializers.CharField(required=False, default=User.Roles.USER)
     term_and_condition_accepted = serializers.BooleanField(required=True)
 
     def validate(self, attrs):
