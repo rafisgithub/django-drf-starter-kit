@@ -52,10 +52,12 @@ def set_auth_cookies(response, access_token, refresh_token, secure=False):
     # Get domain setting from Django settings
     domain = getattr(settings, 'SESSION_COOKIE_DOMAIN', None)
     
+    
     # Determine SameSite value
     # For cross-origin requests with credentials, use 'None' with Secure=True
     # For same-origin, 'Lax' is sufficient
-    samesite = 'None' if secure else 'Lax'
+    samesite = settings.CSRF_COOKIE_SAMESITE
+
     
     # Access token cookie
     response.set_cookie(
@@ -98,7 +100,6 @@ def clear_auth_cookies(response):
 
 def create_hybrid_auth_response(data, tokens, request, message="Authentication successful", status_code=200):
    
-    
     is_mobile = getattr(request, 'is_mobile_client', False)
     
     if is_mobile:
@@ -123,7 +124,8 @@ def create_hybrid_auth_response(data, tokens, request, message="Authentication s
             status_code=status_code
         )
         
-        secure = not settings.DEBUG 
+        # Use the SESSION_COOKIE_SECURE setting which is configured based on CROSS_ORIGIN_DEVELOPMENT
+        secure = settings.SESSION_COOKIE_SECURE
         set_auth_cookies(response, tokens['access'], tokens['refresh'], secure=secure)
     
     return response
@@ -159,8 +161,8 @@ def create_hybrid_refresh_response(tokens, request, message="Token refreshed suc
         # Set cookies for web clients
         secure = not settings.DEBUG
         domain = getattr(settings, 'SESSION_COOKIE_DOMAIN', None)
-        samesite = 'None' if secure else 'Lax'
-        
+        samesite = settings.CSRF_COOKIE_SAMESITE
+                
         response.set_cookie(
             key='access_token',
             value=tokens['access'],
@@ -182,5 +184,6 @@ def create_hybrid_refresh_response(tokens, request, message="Token refreshed suc
                 samesite=samesite,
                 max_age=getattr(settings, 'REFRESH_TOKEN_COOKIE_MAX_AGE', 86400 * 7)
             )
+            
     
     return response

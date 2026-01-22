@@ -16,6 +16,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     email = models.EmailField(_("email address"), unique=True)
     avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
+    full_name = models.CharField(max_length=255, blank=True, null=True)
     role = models.CharField(max_length=20, choices=Roles.choices, default=Roles.USER)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -35,8 +36,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user_profile')
-    first_name = models.CharField(max_length=30, blank=True)
-    last_name = models.CharField(max_length=30, blank=True)
     phone = models.CharField(max_length=20, blank=True, null=True)
     accepted_terms = models.BooleanField(default=False)
     dob = models.DateField(blank=True, null=True)
