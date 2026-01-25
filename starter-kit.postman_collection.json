@@ -1,0 +1,966 @@
+{
+  "info": {
+    "_postman_id": "fe1cd627-5d16-4bd0-85fe-f492b670bd89",
+    "name": "starter-kit",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "36741567",
+    "_collection_link": "https://go.postman.co/collection/36741567-fe1cd627-5d16-4bd0-85fe-f492b670bd89?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Sign Up",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var res = pm.response.json();\r",
+                  "\r",
+                  "pm.collectionVariables.set('email', res.data.user.email)\r",
+                  "\r",
+                  "console.log(res.data.user.email)\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {}
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "X-Client-Type",
+                "value": "mobile",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "full_name",
+                  "value": "Al Arafat",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "rafi.ahmed@gmail.com",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "123456",
+                  "type": "text"
+                },
+                {
+                  "key": "purpose",
+                  "value": "create_account",
+                  "type": "text",
+                  "uuid": "5120f86e-dea8-40f1-8611-1fd33dcdbdeb"
+                },
+                {
+                  "key": "role",
+                  "value": "agency",
+                  "description": "customer or agency",
+                  "type": "text",
+                  "uuid": "cc1af63e-9de4-468f-a9cd-e00f5f432db2"
+                },
+                {
+                  "key": "term_and_condition_accepted",
+                  "value": "True",
+                  "type": "text",
+                  "uuid": "190d05e5-0451-46fb-8989-e78e02e17719"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/signup/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "signup",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "signin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// var res = pm.response.json();\r",
+                  "// console.log(res)\r",
+                  "// pm.collectionVariables.set(\"token\", res.data.tokens.access);\r",
+                  "\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {}
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "X-Client-Type",
+                "value": "mobile",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "email",
+                  "value": "{{email}}",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "123456",
+                  "type": "text"
+                },
+                {
+                  "key": "remember_me",
+                  "value": "True",
+                  "type": "text",
+                  "uuid": "c05f7c18-2368-4e2f-8f66-57b37750eb2c"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/signin/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "signin",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "signout",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Client-Type",
+                "value": "mobile",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "refresh_token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc3MTA2MDE3NCwiaWF0IjoxNzY4NDY4MTc0LCJqdGkiOiJhYTA3YTk5NzMxNmY0ODdhYmM0Mzc2M2M1ZDM0MDhmYSIsInVzZXJfaWQiOjIxLCJyb2xlIjoiYWdlbmN5IiwidWFoIjoiMjgwMjU4YmFkNGY5Njg0ZmIwNGQzYTM2MjM5N2JjY2FjMzAwMWEyMDdmYmE5NzUyYmMzZTdhNGM4MmQ4ZGZjZCJ9.9zd3b1IhlA-h5x8tWjmOsVa8MWy5TVaqwOs9ItZZrms",
+                  "type": "text",
+                  "uuid": "ea40e253-2841-4f2a-8927-c16672648617",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/signout/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "signout",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "change-password",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "X-Client-Type",
+                "value": "mobile",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "old_password",
+                  "value": "asdfsdewq@@2adsfwd",
+                  "type": "text"
+                },
+                {
+                  "key": "new_password",
+                  "value": "12345678",
+                  "type": "text"
+                },
+                {
+                  "key": "confirm_password",
+                  "value": "12345678",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/change-password/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "change-password",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "send-otp",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "X-Client-Type",
+                "value": "mobile",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "email",
+                  "value": "{{email}}",
+                  "type": "text"
+                },
+                {
+                  "key": "purpose",
+                  "value": "reset_password",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/send-otp/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "send-otp",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "resend-otp",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var res = pm.response.json();\r",
+                  "pm.collectionVariables.set('otp', res.data.otp)"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "X-Client-Type",
+                "value": "mobile",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "email",
+                  "value": "{{email}}",
+                  "type": "text"
+                },
+                {
+                  "key": "purpose",
+                  "value": "password_reset",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/resend-otp/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "resend-otp",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "verify-otp",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "X-Client-Type",
+                "value": "mobile",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "email",
+                  "value": "{{email}}",
+                  "type": "text"
+                },
+                {
+                  "key": "purpose",
+                  "value": "create_account",
+                  "type": "text"
+                },
+                {
+                  "key": "otp",
+                  "value": "412960",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/verify-otp/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "verify-otp",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "reset-password",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "X-Client-Type",
+                "value": "mobile",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "email",
+                  "value": "{{email}}",
+                  "type": "text"
+                },
+                {
+                  "key": "otp",
+                  "value": "412960",
+                  "type": "text"
+                },
+                {
+                  "key": "purpose",
+                  "value": "password_reset",
+                  "type": "text"
+                },
+                {
+                  "key": "new_password",
+                  "value": "asdfsdewq@@2adsfw",
+                  "type": "text"
+                },
+                {
+                  "key": "confirm_password",
+                  "value": "asdfsdewq@@2adsfw",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/reset-password/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reset-password",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "token/refresh",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "X-Client-Type",
+                "value": "mobile",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "refresh",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc3MTA2MDU0NCwiaWF0IjoxNzY4NDY4NTQ0LCJqdGkiOiI3MzIwMTQ3MWMxNTI0NGZiOTgyNzgxZDQ4MjUyNWEwNiIsInVzZXJfaWQiOjIxLCJyb2xlIjoiYWdlbmN5IiwidWFoIjoiMjgwMjU4YmFkNGY5Njg0ZmIwNGQzYTM2MjM5N2JjY2FjMzAwMWEyMDdmYmE5NzUyYmMzZTdhNGM4MmQ4ZGZjZCJ9.C5IF5DDzIzSxo5zBKkUTf_93WA31h-R1T15EP1pmiu4",
+                  "type": "text",
+                  "uuid": "12a28a27-30b9-4e11-8682-9e696317ba7a",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/token/refresh/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "token",
+                "refresh",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "token/verify",
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {}
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "X-Client-Type",
+                "value": "mobile",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY4NDcyMDUxLCJpYXQiOjE3Njg0Njg0NTEsImp0aSI6ImM2OWJiMWUxMzZiMDRkMDliMzRlZmMzZWRlY2JlNDFiIiwidXNlcl9pZCI6MjEsInJvbGUiOiJhZ2VuY3kiLCJ1YWgiOiIyODAyNThiYWQ0Zjk2ODRmYjA0ZDNhMzYyMzk3YmNjYWMzMDAxYTIwN2ZiYTk3NTJiYzNlN2E0YzgyZDhkZmNkIn0.wzaPVKvml1g9s8EDH1Kw0ofwtW_bzW-mDHmT_HtTVnk",
+                  "type": "text",
+                  "uuid": "488b867b-b728-49dd-ab7c-de5a850ccc2b",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/token/verify/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "token",
+                "verify",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "CMS",
+      "item": [
+        {
+          "name": "FAQs",
+          "item": [
+            {
+              "name": "faqs",
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/faqs/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "faqs",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "About System",
+      "item": [
+        {
+          "name": "about-system",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "X-Client-Type",
+                "value": "mobile",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/about-system/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "about-system",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Google auth",
+      "item": [
+        {
+          "name": "google-auth",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "X-Client-Type",
+                "value": "mobile",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "access_token",
+                  "value": "ya29.a0AUMWg_IQu_biQxS5C40S9MRV3LMoOZw9B5QsU5WicoQlYI1c7qLJxopPE2ny6Zfyx2ZRG8eytUctYJS761AtmzV93hx-RVCu17UlS0hGglbja51GIHzQegJPzbNyNe7BbwhFZK5DTtZMy8aHFLLzS-ESmhFYQkFbz4EZSZZMDF3etqVCYwOTCqITLqo16Q-xe54ZxgIaCgYKAakSARESFQHGX2MiIKMGHrNu2ip0SZ43_xblSA0206",
+                  "type": "text",
+                  "uuid": "c1072f67-7fdb-43df-b177-b2c0a2272736"
+                },
+                {
+                  "key": "role",
+                  "value": "agency",
+                  "type": "text",
+                  "uuid": "15470a01-7d7b-41c2-8769-42363e1ce666"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/google-auth/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "google-auth",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "My Account",
+      "item": [
+        {
+          "name": "update-avatar",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "X-Client-Type",
+                "value": "mobile",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "avatar",
+                  "type": "file",
+                  "src": "/C:/Users/rafic/Desktop/2.jpg"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/update-avatar/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "update-avatar",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update-profile",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "X-Client-Type",
+                "value": "mobile",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "full_name",
+                  "value": "Rafi",
+                  "type": "text"
+                },
+                {
+                  "key": "country",
+                  "value": "Bangladesh",
+                  "type": "text",
+                  "uuid": "d475d7d0-ec36-4510-b758-3ac7c9026c75"
+                },
+                {
+                  "key": "time_zone",
+                  "value": "Africa/Algiers Current time: 12:05 PM",
+                  "type": "text",
+                  "uuid": "fc7e4481-6685-4d5a-988f-c74767f45959"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/update-profile/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "update-profile",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get-profile",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "X-Client-Type",
+                "value": "mobile",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/get-profile/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "get-profile",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "refresh_token",
+      "value": ""
+    },
+    {
+      "key": "email",
+      "value": ""
+    },
+    {
+      "key": "full_name",
+      "value": ""
+    },
+    {
+      "key": "role",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "otp",
+      "value": ""
+    }
+  ]
+}

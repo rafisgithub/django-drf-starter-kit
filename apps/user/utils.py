@@ -87,9 +87,30 @@ def set_auth_cookies(response, access_token, refresh_token, secure=False):
 def clear_auth_cookies(response):
 
     domain = getattr(settings, 'SESSION_COOKIE_DOMAIN', None)
+    samesite = settings.CSRF_COOKIE_SAMESITE
+    secure = settings.SESSION_COOKIE_SECURE
     
-    response.delete_cookie('access_token', domain=domain)
-    response.delete_cookie('refresh_token', domain=domain)
+    # Manually expire cookies to support 'secure' attribute which delete_cookie may not accept
+    response.set_cookie(
+        'access_token', 
+        value='', 
+        max_age=0, 
+        expires='Thu, 01 Jan 1970 00:00:00 GMT', 
+        domain=domain, 
+        samesite=samesite, 
+        secure=secure,
+        httponly=True 
+    )
+    response.set_cookie(
+        'refresh_token', 
+        value='', 
+        max_age=0, 
+        expires='Thu, 01 Jan 1970 00:00:00 GMT', 
+        domain=domain, 
+        samesite=samesite, 
+        secure=secure, 
+        httponly=True
+    )
     return response
 
 
