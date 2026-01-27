@@ -3,10 +3,12 @@ cachetools==6.2.2
 certifi==2025.10.5
 cffi==2.0.0
 charset-normalizer==3.4.4
+click==8.3.1
+colorama==0.4.6
 cryptography==46.0.3
 defusedxml==0.7.1
 diff-match-patch==20241021
-Django==5.2.5
+Django==6.0.1
 django-cors-headers==4.7.0
 django-debug-toolbar==6.0.0
 django-import-export==4.3.9
@@ -15,7 +17,7 @@ django-unfold==0.64.2
 djangorestframework==3.16.1
 djangorestframework_simplejwt==5.5.1
 gunicorn==23.0.0
-uvicorn==0.34.0
+h11==0.16.0
 httplib2==0.31.0
 idna==3.11
 oauthlib==3.3.1
@@ -39,4 +41,5 @@ tablib==3.8.0
 tzdata==2025.2
 uritemplate==4.2.0
 urllib3==2.5.0
+uvicorn==0.34.0
 whitenoise==6.9.0
