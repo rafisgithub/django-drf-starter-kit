@@ -36,7 +36,6 @@ class SignUpSerializer(serializers.ModelSerializer):
     full_name = serializers.CharField(required=False, allow_blank=True)
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)
-    purpose = serializers.CharField(write_only=True)
     role = serializers.CharField(required=False, default=User.Roles.USER)
     term_and_condition_accepted = serializers.BooleanField(required=True)
 
@@ -54,12 +53,11 @@ class SignUpSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['email', 'password', 'full_name', 'purpose', 'role', 'term_and_condition_accepted']
+        fields = ['email', 'password', 'full_name', 'role', 'term_and_condition_accepted']
 
     def create(self, validated_data):
         email = validated_data.pop('email')
         password = validated_data.pop('password')
-        purpose = validated_data.pop('purpose')
         
         user = User.objects.create_user(email=email, password=password, **validated_data)
         UserProfile.objects.create(user=user)
@@ -70,7 +68,7 @@ class SignUpSerializer(serializers.ModelSerializer):
 
         expires_at = timezone.now() + timedelta(minutes=3)
 
-        OTP.objects.update_or_create(user=user, defaults={'otp': otp_hashed, 'is_verify': False, 'purpose': purpose, 'created_at': timezone.now(), 'expires_at': expires_at})
+        OTP.objects.update_or_create(user=user, defaults={'otp': otp_hashed, 'is_verify': False, 'purpose': 'account-activation', 'created_at': timezone.now(), 'expires_at': expires_at})
         
         system_info = AboutSystem.objects.first()
         html_content = render_to_string('email/otp_verification_template.html', {'otp_code': otp_code, 'system_info': system_info})
