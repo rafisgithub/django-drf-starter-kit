@@ -303,17 +303,16 @@ else:
 
 
 
-
-
-
-# Gmail SMT configuration
+# email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 465
-EMAIL_USE_SSL = True
-EMAIL_USE_TLS = False
-EMAIL_HOST_USER = config('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = 587  # Or 465 if using SSL
+EMAIL_USE_TLS = True  # If you use port 587
+
+EMAIL_HOST_USER = 'rafi.cse.ahmed@gmail.com'
+EMAIL_HOST_PASSWORD = 'rjib rhun elor goiu'
+DEFAULT_FROM_EMAIL = 'rafi.cse.ahmed@gmail.com'
+
 
 
 

@@ -39,23 +39,8 @@ class SignUpView(APIView):
         
         if serializer.is_valid():
             serializer.save()
-            result = serializer.data
-            
-            
-            tokens = {
-                'access': result['access'],
-                'refresh': result['refresh']
-            }
-            
-            response = create_hybrid_auth_response(
-                data=result['user'],
-                tokens=tokens,
-                request=request,
-                message="Signup successful.",
-                status_code=status.HTTP_201_CREATED
-            )
-            
-            return response
+
+            return success(data=[],message="Signup successful. Please verify your email using the OTP sent.", status_code=status.HTTP_201_CREATED)
         raise ValidationError(serializer.errors)
 
 class SignInView(APIView):
@@ -163,7 +148,30 @@ class VerifyOTPView(APIView):
         serializer = VerifyOTPSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return success(data=[], message="OTP verify is successfully.", status_code=status.HTTP_200_OK)
+            result = serializer.data
+
+
+            purpose = request.data.get('purpose')
+            
+            if purpose == 'create_account':
+
+
+                tokens = {
+                    'access': result['access'],
+                    'refresh': result['refresh']
+                }
+                
+                response = create_hybrid_auth_response(
+                    data=result['user'],
+                    tokens=tokens,
+                    request=request,
+                    message="OTP verified successfully.",
+                    status_code=status.HTTP_200_OK
+                )
+            
+                return response
+            else:
+                return success(data=[], message="OTP verified successfully.", status_code=status.HTTP_200_OK)
         return error(message="OTP verify is failed.", status_code=status.HTTP_400_BAD_REQUEST, errors=serializer.errors)
 
 

@@ -82,22 +82,7 @@ class SignUpSerializer(serializers.ModelSerializer):
     
         return user
     
-    def to_representation(self, instance):
-        request = self.context.get('request')
-        user_agent_hash = get_user_agent_hash(request) if request else None
-
-        refresh = CustomRefreshToken.for_user(instance, user_agent_hash=user_agent_hash)
-        
-        return {
-            'user': {
-                'id': instance.id,
-                'full_name': instance.full_name,
-                'email': instance.email,
-                'role': instance.role,
-            },
-            'refresh': str(refresh),
-            'access': str(refresh.access_token)
-        }
+  
 
 
     
@@ -112,8 +97,14 @@ class SignInSerializer(serializers.Serializer):
     def validate(self, attrs):
         password = attrs.get('password')
         user = User.objects.filter(email=attrs['email']).first()
+
+        
         if not user:
            raise serializers.ValidationError({'email': 'User with this email does not exist.'})
+        
+        if not user.is_otp_verified:
+              raise serializers.ValidationError({'email': 'Email not verified. Please verify your email first.'})
+
         if not user.check_password(password):
             raise serializers.ValidationError({'password': 'Invalid password.'})
         self.user = user
@@ -336,22 +327,45 @@ class VerifyOTPSerializer(serializers.Serializer):
         self.user = user
         self.otp_obj = otp_obj
         return data
+    
+
+    def to_representation(self, instance):
+        user = self.user
+        request = self.context.get('request')
+
+        user_agent_hash = get_user_agent_hash(request) if request else None
+
+        refresh = CustomRefreshToken.for_user(
+            user,
+            user_agent_hash=user_agent_hash
+        )
+
+        return {
+            'user': {
+                'id': user.id,
+                'email': user.email,
+                'role': user.role,
+            },
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+        }
+
 
     def save(self):
         self.otp_obj.is_verify = True
+        self.user.is_otp_verified = True
         self.otp_obj.attempts = 0
         self.otp_obj.save()
+        self.user.save()
 
 class ResetPasswordSerializer(serializers.Serializer):
     email = serializers.EmailField()
-    otp = serializers.CharField(max_length=6)
     purpose = serializers.CharField()
     new_password = serializers.CharField(write_only=True)
     confirm_password = serializers.CharField(write_only=True)
 
     def validate(self, data):
         email = data['email']
-        otp = data['otp']
         purpose = data['purpose']
         new_password = data['new_password']
         confirm_password = data['confirm_password']
@@ -365,9 +379,6 @@ class ResetPasswordSerializer(serializers.Serializer):
         if otp_obj.is_expired():
             otp_obj.delete()
             raise serializers.ValidationError({'error': "OTP has expired."})
-
-        if not otp_obj.check_otp(otp):
-            raise serializers.ValidationError({'error': "Incorrect OTP."})
         
         if not otp_obj.is_verify:
             raise serializers.ValidationError({'error': 'OTP not verified yet. Please verify OTP first.'})
