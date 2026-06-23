@@ -1,8 +1,8 @@
 
 from apps.system_setting.models import AboutSystem
 from .models import User, UserProfile, OTP
-from rest_framework import  serializers
-from django.core.exceptions import ValidationError
+from rest_framework import serializers
+from django.db import transaction
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.hashers import make_password
 from django.utils.timezone import timedelta
@@ -60,28 +60,31 @@ class SignUpSerializer(serializers.ModelSerializer):
         email = validated_data.pop('email')
         password = validated_data.pop('password')
         purpose = validated_data.pop('purpose')
-        
-        user = User.objects.create_user(email=email, password=password, **validated_data)
-        UserProfile.objects.create(user=user)
-        
 
         otp_code = generate_otp()
         otp_hashed = make_password(otp_code)
-
         expires_at = timezone.now() + timedelta(minutes=3)
 
-        OTP.objects.update_or_create(user=user, defaults={'otp': otp_hashed, 'is_verify': False, 'purpose': purpose, 'created_at': timezone.now(), 'expires_at': expires_at})
-        
-        system_info = AboutSystem.objects.first()
-        html_content = render_to_string('email/otp_verification_template.html', {'otp_code': otp_code, 'system_info': system_info})
-        send_email(
-            subject='Verification OTP',
-            body=f'Your OTP is {otp_code}. Expire in 3 minutes.',
-            to_emails=[user.email,],
-            from_email=settings.EMAIL_HOST_USER,
-            html_body=html_content
+        with transaction.atomic():
+            user = User.objects.create_user(email=email, password=password, **validated_data)
+            UserProfile.objects.create(user=user)
+
+            OTP.objects.update_or_create(
+                user=user,
+                purpose=purpose,
+                defaults={'otp': otp_hashed, 'is_verify': False, 'created_at': timezone.now(), 'expires_at': expires_at},
             )
-    
+
+            system_info = AboutSystem.objects.first()
+            html_content = render_to_string('email/otp_verification_template.html', {'otp_code': otp_code, 'system_info': system_info})
+            send_email(
+                subject='Verification OTP',
+                body=f'Your OTP is {otp_code}. Expire in 3 minutes.',
+                to_emails=[user.email,],
+                from_email=settings.EMAIL_HOST_USER,
+                html_body=html_content
+            )
+
         return user
     
   
@@ -103,7 +106,10 @@ class SignInSerializer(serializers.Serializer):
         
         if not user:
            raise serializers.ValidationError({'email': 'User with this email does not exist.'})
-        
+
+        if not user.is_active:
+            raise serializers.ValidationError({'email': 'This account is inactive.'})
+
         if not user.is_otp_verified:
               raise serializers.ValidationError({'email': 'Email not verified. Please verify your email first.'})
 
@@ -152,22 +158,8 @@ class SignOutSerializer(serializers.Serializer):
         try:
             token = RefreshToken(self.refresh_token)
             token.blacklist()
-            
-            # Optional: Blacklist access token if supported/provided
-            # Note: AccessToken blacklisting requires BLACKLIST_AFTER_ROTATION=True and setup
-            if self.access_token:
-                 # Depending on SimpleJWT version, AccessToken might not have 'blacklist' method directly 
-                 # unless it's an OutstandingToken. But we can try given the settings.
-                 # Actually, usually you just let it expire short. 
-                 # But if we must:
-                 from rest_framework_simplejwt.tokens import AccessToken
-                 try:
-                     access = AccessToken(self.access_token)
-                     # access.blacklist() # This might fail if strict checks aren't in place
-                 except:
-                     pass 
         except Exception as e:
-            return ValidationError({'error': str(e)})
+            raise serializers.ValidationError({'error': str(e)})
         
 
 class ChangePasswordSerializer(serializers.Serializer):
@@ -187,21 +179,21 @@ class ChangePasswordSerializer(serializers.Serializer):
 
         user = self.context['request'].user
         if not user:
-            raise ValidationError({'error': 'User not found.'})
+            raise serializers.ValidationError({'error': 'User not found.'})
         
         if not user.check_password(old_password):
-            raise ValidationError({'error': 'Old password is incorrect.'})
+            raise serializers.ValidationError({'error': 'Old password is incorrect.'})
         
         if new_password != confirm_password:
-            raise ValidationError({'error': 'New password and confirm password is not match.'})
+            raise serializers.ValidationError({'error': 'New password and confirm password do not match.'})
         
         if old_password == new_password:
-            raise ValidationError({'error': 'The new password is not the same as the old password.'})
+            raise serializers.ValidationError({'error': 'The new password is not the same as the old password.'})
         
         try:
             validate_password(new_password)
         except Exception as e:
-            raise ValidationError({'error': str(e.messages)})
+            raise serializers.ValidationError({'error': str(e.messages)})
         
         self.user = user
         return attrs
@@ -229,7 +221,7 @@ class SendOTPSerializer(serializers.Serializer):
 
         expires_at = timezone.now() + timedelta(minutes=3)
 
-        OTP.objects.update_or_create(user=user, defaults={'otp': otp_hashed, 'is_verify': False, 'purpose': purpose, 'created_at': timezone.now(), 'expires_at': expires_at})
+        OTP.objects.update_or_create(user=user, purpose=purpose, defaults={'otp': otp_hashed, 'is_verify': False, 'created_at': timezone.now(), 'expires_at': expires_at})
         
         system_info = AboutSystem.objects.first()
         html_content = render_to_string('email/otp_verification_template.html', {'otp_code': otp_code, 'system_info': system_info})
@@ -242,8 +234,8 @@ class SendOTPSerializer(serializers.Serializer):
                 from_email=settings.EMAIL_HOST_USER,
                 html_body=html_content
                 )
-        except:
-            raise serializers.ValidationError("SMTP NOT VALID!")
+        except Exception as e:
+            raise serializers.ValidationError({'error': f'Failed to send OTP email: {e}'})
         return attrs
 
 class ResendOTPSerializer(serializers.Serializer):
@@ -274,7 +266,7 @@ class ResendOTPSerializer(serializers.Serializer):
 
         expires_at = timezone.now() + timedelta(minutes=3)
 
-        OTP.objects.update_or_create(user=user, defaults={'otp': otp_hashed, 'is_verify': False, 'purpose': purpose, 'created_at': timezone.now(), 'expires_at': expires_at})
+        OTP.objects.update_or_create(user=user, purpose=purpose, defaults={'otp': otp_hashed, 'is_verify': False, 'created_at': timezone.now(), 'expires_at': expires_at})
 
         system_info = AboutSystem.objects.first()
         html_content = render_to_string('email/otp_verification_template.html', {'otp_code': otp_code, 'system_info': system_info})
@@ -287,8 +279,8 @@ class ResendOTPSerializer(serializers.Serializer):
                 from_email=settings.EMAIL_HOST_USER,
                 html_body=html_content
                 )
-        except:
-            raise serializers.ValidationError("SMTP NOT VALID!")
+        except Exception as e:
+            raise serializers.ValidationError({'error': f'Failed to send OTP email: {e}'})
         return attrs
 
 class VerifyOTPSerializer(serializers.Serializer):
@@ -312,7 +304,7 @@ class VerifyOTPSerializer(serializers.Serializer):
             raise serializers.ValidationError({'error': "OTP not found. Please request a new one."})
 
         if otp_obj.is_verify:
-            raise serializers.ValidationError({'error': "OTP already varified."})
+            raise serializers.ValidationError({'error': "OTP already verified."})
 
         if otp_obj.is_expired():
             otp_obj.delete()
@@ -423,10 +415,11 @@ class UserSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "email",
+            "full_name",
+            "role",
             "is_staff",
             "is_active",
-            "date_joined",
-            "profile",
+            "created_at",
         ]
 
 
