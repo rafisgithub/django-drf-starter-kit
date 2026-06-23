@@ -70,13 +70,16 @@ class HybridJWTAuthentication(JWTAuthentication):
         Tokens are bound to the User-Agent that created them.
         """
         from .utils import get_user_agent_hash
-        
-        token_ua_hash = validated_token.get('user_agent')
+        import logging
+
+        token_ua_hash = validated_token.get('uah')
         current_ua_hash = get_user_agent_hash(request)
-        
+
         if token_ua_hash and token_ua_hash != current_ua_hash:
             # Log for security monitoring
-            print(f"SECURITY WARNING: User-Agent Mismatch! Token UA: {token_ua_hash}, Request UA: {current_ua_hash}")
+            logging.getLogger(__name__).warning(
+                "User-Agent mismatch on token validation (possible token theft)."
+            )
             raise exceptions.AuthenticationFailed('Token is invalid (User-Agent Mismatch).')
 
 

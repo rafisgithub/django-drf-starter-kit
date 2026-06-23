@@ -3,7 +3,6 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from datetime import timedelta
-from django.utils import timezone
 from .managers import UserManager
 from django.contrib.auth.hashers import check_password
 
@@ -21,7 +20,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_superuser = models.BooleanField(default=False)
-    term_and_condition_accepted = models.BooleanField()
+    term_and_condition_accepted = models.BooleanField(default=False)
     is_otp_verified = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
