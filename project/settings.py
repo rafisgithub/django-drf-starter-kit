@@ -265,6 +265,9 @@ REST_FRAMEWORK = {
         "apps.user.authentication.HybridJWTAuthentication",  # Hybrid auth for Web + Mobile
     ),
     "EXCEPTION_HANDLER": "apps.utils.custom_exception.custom_exception_handler",
+    "DEFAULT_THROTTLE_RATES": {
+        "anon": "30/min",
+    },
 }
 
 
