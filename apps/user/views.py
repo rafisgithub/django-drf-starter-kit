@@ -7,7 +7,6 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.views import TokenRefreshView, TokenVerifyView
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 from .authentication import CookieJWTAuthentication
-from rest_framework.validators import ValidationError
 from .utils import clear_auth_cookies
 
 
@@ -48,8 +47,6 @@ class SignInView(APIView):
     permission_classes = []
 
     def post(self, request):
-        print("REQUEST DATA:", request.data)
-        
         serializer = SignInSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             result = serializer.data
@@ -85,9 +82,7 @@ class SignOutView(APIView):
             data['refresh_token'] = request.COOKIES['refresh_token']
         if 'access_token' not in data and 'access_token' in request.COOKIES:
             data['access_token'] = request.COOKIES['access_token']
-        
-        print("COOKIES:", request.COOKIES)
-        
+
         serializer = SignOutSerializer(data=data)
         if serializer.is_valid():
             serializer.save()

@@ -175,7 +175,7 @@ def create_hybrid_refresh_response(tokens, request, message="Token refreshed suc
         )
         
         # Set cookies for web clients
-        secure = not settings.DEBUG
+        secure = settings.SESSION_COOKIE_SECURE
         domain = getattr(settings, 'SESSION_COOKIE_DOMAIN', None)
         samesite = settings.CSRF_COOKIE_SAMESITE
                 
