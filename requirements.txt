@@ -1,45 +1,60 @@
+# Core framework
+Django==6.0.1
 asgiref==3.9.1
+sqlparse==0.5.3
+tzdata==2025.2
+
+# REST API & authentication
+djangorestframework==3.16.1
+djangorestframework_simplejwt==5.5.1
+PyJWT==2.10.1
+cryptography==46.0.3
+python3-openid==3.2.0
+oauthlib==3.3.1
+requests-oauthlib==2.0.0
+rsa==4.9.1
+pyasn1==0.6.1
+pyasn1_modules==0.4.2
+
+# Database
+psycopg2-binary==2.9.11
+
+# Admin & developer tools
+django-unfold==0.64.2
+django-import-export==4.3.9
+django-debug-toolbar==6.0.0
+django-querycount==0.8.3
+diff-match-patch==20241021
+tablib==3.8.0
+
+# Server & static files
+gunicorn==23.0.0
+uvicorn==0.34.0
+h11==0.16.0
+whitenoise==6.9.0
+django-cors-headers==4.7.0
+
+# Config & utilities
+python-decouple==3.8
+pillow==11.3.0
+requests==2.32.5
+httplib2==0.31.0
+uritemplate==4.2.0
+
+# Google API dependencies
 cachetools==6.2.2
+proto-plus==1.26.1
+protobuf==6.33.1
+
+# Transitive dependencies
 certifi==2025.10.5
 cffi==2.0.0
 charset-normalizer==3.4.4
 click==8.3.1
 colorama==0.4.6
-cryptography==46.0.3
 defusedxml==0.7.1
-diff-match-patch==20241021
-Django==6.0.1
-django-cors-headers==4.7.0
-django-debug-toolbar==6.0.0
-django-import-export==4.3.9
-django-querycount==0.8.3
-django-unfold==0.64.2
-djangorestframework==3.16.1
-djangorestframework_simplejwt==5.5.1
-gunicorn==23.0.0
-h11==0.16.0
-httplib2==0.31.0
 idna==3.11
-oauthlib==3.3.1
 packaging==25.0
-pillow==11.3.0
-proto-plus==1.26.1
-protobuf==6.33.1
-psycopg2-binary==2.9.11
-pyasn1==0.6.1
-pyasn1_modules==0.4.2
 pycparser==2.23
-PyJWT==2.10.1
 pyparsing==3.2.5
-python-decouple==3.8
-python3-openid==3.2.0
-requests==2.32.5
-requests-oauthlib==2.0.0
-rsa==4.9.1
-sqlparse==0.5.3
-tablib==3.8.0
-tzdata==2025.2
-uritemplate==4.2.0
 urllib3==2.5.0
-uvicorn==0.34.0
-whitenoise==6.9.0
