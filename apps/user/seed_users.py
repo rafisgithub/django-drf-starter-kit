@@ -28,26 +28,22 @@ def seed_users():
         {
             "email": "customer@customer.com",
             "full_name": "Customer User",
-            "role": "customer",
             "avatar": "avatars/2.jpg",
             "password": "12345678",
             "is_staff": False,
             "is_superuser": False,
-            "is_vendor": False,
             "term_and_condition_accepted": True,
-           
+
         },
         {
             "email": "agency@agency.com",
             "full_name": "Agency User",
-            "role": "agency",
             "avatar": "avatars/3.jpg",
             "password": "12345678",
             "is_staff": False,
             "is_superuser": False,
-            "is_customer": True,
             "term_and_condition_accepted": True,
-            
+
         },
         {
             "email": "customer1@customer.com",

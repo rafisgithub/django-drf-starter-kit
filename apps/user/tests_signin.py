@@ -7,10 +7,12 @@ class SignInViewTests(APITestCase):
     def setUp(self):
         self.email = "test@example.com"
         self.password = "password123"
-        self.user = User.objects.create_user(email=self.email, password=self.password)
-        # Create profile as it seems required by SignUpSerializer/User model structure usually, asking context might be good but let's assume minimum
-        UserProfile.objects.create(user=self.user, first_name="Test", last_name="User")
-        
+        # Sign-in requires a verified, active account.
+        self.user = User.objects.create_user(
+            email=self.email, password=self.password, is_otp_verified=True
+        )
+        UserProfile.objects.create(user=self.user)
+
         self.signin_url = reverse('signin')
 
     def test_signin_success(self):

@@ -37,7 +37,6 @@ class SignUpSerializer(serializers.ModelSerializer):
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)
     purpose = serializers.CharField(write_only=True)
-    role = serializers.CharField(required=False, default=User.Roles.USER)
     term_and_condition_accepted = serializers.BooleanField(required=True)
 
     def validate(self, attrs):
@@ -54,7 +53,9 @@ class SignUpSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['email', 'password', 'full_name', 'purpose', 'role', 'term_and_condition_accepted']
+        # 'role' is intentionally excluded: it must not be client-assignable at
+        # signup. New users get the model default (Roles.USER).
+        fields = ['email', 'password', 'full_name', 'purpose', 'term_and_condition_accepted']
 
     def create(self, validated_data):
         email = validated_data.pop('email')
