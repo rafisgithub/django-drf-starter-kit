@@ -4,7 +4,7 @@ services:
   web:
     build: .
     container_name: django_starter_kit
-    command: daphne -b 0.0.0.0 -p 8000 project.asgi:application
+    command: gunicorn project.asgi:application -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000
     volumes:
       - .:/app
       - ./staticfiles:/app/staticfiles

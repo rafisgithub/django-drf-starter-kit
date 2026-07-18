@@ -3,6 +3,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.throttling import ScopedRateThrottle
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.views import TokenRefreshView, TokenVerifyView
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
@@ -31,6 +32,8 @@ from apps.utils.helpers import success, error
 # Create your views here.
 class SignUpView(APIView):
     permission_classes = []
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = 'otp'  # signup triggers an OTP email
 
     def post(self, request):
 
@@ -45,6 +48,8 @@ class SignUpView(APIView):
 class SignInView(APIView):
 
     permission_classes = []
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = 'login'
 
     def post(self, request):
         serializer = SignInSerializer(data=request.data, context={'request': request})
@@ -114,6 +119,8 @@ class ChangePasswordView(APIView):
 
 class SendOTPView(APIView):
     permission_classes = []
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = 'otp'
 
     def post(self, request):
         serializer = SendOTPSerializer(data=request.data)
@@ -126,6 +133,8 @@ class SendOTPView(APIView):
 
 class ResendOTPView(APIView):
     permission_classes = []
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = 'otp'
 
     def post(self, request):
         serializer = ResendOTPSerializer(data=request.data)
@@ -138,6 +147,8 @@ class ResendOTPView(APIView):
 
 class VerifyOTPView(APIView):
     permission_classes = []
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = 'otp'
 
     def post(self, request):
         serializer = VerifyOTPSerializer(data=request.data)
@@ -172,6 +183,8 @@ class VerifyOTPView(APIView):
 
 class ResetPasswordView(APIView):
     permission_classes = []
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = 'otp'
 
     def post(self, request):
         serializer = ResetPasswordSerializer(data=request.data)
